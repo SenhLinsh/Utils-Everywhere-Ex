@@ -53,6 +53,18 @@ public class WindowManagerHelper {
         return mViews.size();
     }
 
+    public boolean containView(View view) {
+        return mViews.contains(view);
+    }
+
+    public boolean containViewType(Class<? extends View> clazz) {
+        for (View view : mViews) {
+            if (clazz.isInstance(view))
+                return true;
+        }
+        return false;
+    }
+
     public void updateViewLayout(View view) {
         mWindowManager.updateViewLayout(view, view.getLayoutParams());
     }
@@ -72,6 +84,7 @@ public class WindowManagerHelper {
 
     public void removeView(View view) {
         mWindowManager.removeView(view);
+        mViews.remove(view);
     }
 
     public void removeAllViews() {
