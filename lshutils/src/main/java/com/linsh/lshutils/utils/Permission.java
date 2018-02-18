@@ -2,14 +2,18 @@ package com.linsh.lshutils.utils;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
+import android.widget.Toast;
 
+import com.linsh.utilseverywhere.IntentUtils;
 import com.linsh.utilseverywhere.PermissionUtils;
 
 /**
@@ -20,6 +24,8 @@ import com.linsh.utilseverywhere.PermissionUtils;
  * </pre>
  */
 public class Permission {
+
+    public static int REQUEST_CODE = 101;
 
     /*
     public static class Test {
@@ -124,32 +130,38 @@ public class Permission {
 
         public static final String NAME = Manifest.permission.SYSTEM_ALERT_WINDOW;
 
-        public static boolean check(Activity activity) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(activity)) {
-                return false;
-            }
-            return true;
-        }
-
         @RequiresApi(api = Build.VERSION_CODES.M)
-        public static void request(Activity activity, @IntRange(from = 0) int requestCode) {
-            Permission.requestPermission(activity, NAME, requestCode);
+        public static boolean check(Activity activity) {
+            return Settings.canDrawOverlays(activity);
         }
 
-        public static boolean checkOrRequest(Activity activity, @IntRange(from = 0) int requestCode) {
+        public static void gotoPermissionSetting(Activity activity) {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+                intent.setData(Uri.parse("package:" + activity.getPackageName()));
+                activity.startActivityForResult(intent, REQUEST_CODE);
+            } else {
+                IntentUtils.gotoPermissionSetting();
+            }
+        }
+
+        /**
+         * 悬浮窗权限默认是关闭的, 常规的请求无法弹出请求窗口, 需要自己动手打开 (目前发现小米系统是这样的)
+         *
+         * @param activity   Activity
+         * @param requestMsg 没有权限时, 自动跳转权限设置界面的提示语
+         * @return
+         */
+        @RequiresApi(api = Build.VERSION_CODES.M)
+        public static boolean checkOrRequest(Activity activity, String requestMsg) {
             boolean check = check(activity);
-            if (!check && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                request(activity, requestCode);
+            if (!check && requestMsg != null && requestMsg.length() > 0) {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+                intent.setData(Uri.parse("package:" + activity.getPackageName()));
+                activity.startActivityForResult(intent, REQUEST_CODE);
+                Toast.makeText(activity, requestMsg, Toast.LENGTH_SHORT).show();
             }
             return check;
-        }
-
-        public static boolean checkResult(@NonNull String[] permissions, @NonNull int[] grantResults) {
-            return Permission.checkResult(NAME, permissions, grantResults);
-        }
-
-        public static boolean isNeverAsked(Activity activity) {
-            return Permission.isNeverAsked(activity, NAME);
         }
     }
 
