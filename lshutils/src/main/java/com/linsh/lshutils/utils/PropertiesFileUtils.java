@@ -29,6 +29,16 @@ public class PropertiesFileUtils {
     /**
      * 获取配置文件
      *
+     * @param classOfT 配置对应的类
+     * @return 配置文件
+     */
+    public static <T extends JsonBean> File getPropertyFile(Class<T> classOfT) {
+        return FileManagerUtils.getFile(getPropertyDir(), classOfT.getSimpleName());
+    }
+
+    /**
+     * 获取配置文件
+     *
      * @param fileName 配置文件名
      * @return 配置文件
      */
