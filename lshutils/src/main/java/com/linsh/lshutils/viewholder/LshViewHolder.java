@@ -15,7 +15,7 @@ import android.view.ViewGroup;
  */
 public class LshViewHolder extends RecyclerView.ViewHolder {
 
-    private LshViewHolder(View itemView) {
+    public LshViewHolder(View itemView) {
         super(itemView);
         initView(itemView);
     }
