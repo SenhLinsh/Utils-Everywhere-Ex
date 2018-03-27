@@ -7,10 +7,9 @@ android {
         minSdkVersion 15
         targetSdkVersion 26
         versionCode 1
-        versionName "1.0"
+        versionName "2.0.0"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
     }
 
     buildTypes {
@@ -19,8 +18,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
 }
+
+// 默认获取本地 Project
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+def utilsEverywhere = properties.getProperty('utilsEverywhere')
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -33,5 +36,6 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:26.1.0'
     compile 'com.google.code.gson:gson:2.7'
 
-    compile project(':Utils-Everywhere:utils')
+    if (utilsEverywhere == null) compile 'com.github.SenhLinsh:Utils-Everywhere:2.0.2' else compile project("$utilsEverywhere")
+
 }
