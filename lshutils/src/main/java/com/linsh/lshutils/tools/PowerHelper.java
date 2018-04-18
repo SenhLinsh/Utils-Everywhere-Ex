@@ -1,7 +1,9 @@
 package com.linsh.lshutils.tools;
 
+import android.Manifest;
 import android.app.Service;
 import android.os.PowerManager;
+import android.support.annotation.RequiresPermission;
 
 import com.linsh.utilseverywhere.ContextUtils;
 
@@ -17,16 +19,19 @@ public class PowerHelper {
 
     private PowerManager.WakeLock mWakeLock;
 
+    @Deprecated
+    @RequiresPermission(Manifest.permission.WAKE_LOCK)
     public void keepScreenOn() {
         PowerManager powerManager = (PowerManager) ContextUtils.getSystemService(Service.POWER_SERVICE);
-        mWakeLock = powerManager.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "My Lock");
+        mWakeLock = powerManager.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, getClass().getSimpleName());
         mWakeLock.setReferenceCounted(false);
         mWakeLock.acquire();
     }
 
+    @RequiresPermission(Manifest.permission.WAKE_LOCK)
     public void keepScreenOn(long timeOut) {
         PowerManager powerManager = (PowerManager) ContextUtils.getSystemService(Service.POWER_SERVICE);
-        mWakeLock = powerManager.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "My Lock");
+        mWakeLock = powerManager.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, getClass().getSimpleName());
         mWakeLock.setReferenceCounted(false);
         mWakeLock.acquire(timeOut);
     }
