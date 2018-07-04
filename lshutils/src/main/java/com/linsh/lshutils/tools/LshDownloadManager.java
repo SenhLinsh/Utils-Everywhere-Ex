@@ -8,12 +8,12 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
 
 import com.linsh.utilseverywhere.ContextUtils;
 import com.linsh.utilseverywhere.HandlerUtils;
 import com.linsh.utilseverywhere.SharedPreferenceUtils;
-import com.linsh.utilseverywhere.StringUtils;
 
 import java.io.File;
 
@@ -313,7 +313,7 @@ public class LshDownloadManager {
          */
         public long download() {
             // 判断是否已经下载过该文件
-            if (mRequestId == 0 && !StringUtils.isEmpty(mDownloadKey)) {
+            if (mRequestId == 0 && !TextUtils.isEmpty(mDownloadKey)) {
                 long requestId = SharedPreferenceUtils.getLong(mDownloadKey);
                 if (requestId > 0) {
                     float progress = getProgress(requestId);
