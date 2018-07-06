@@ -33,9 +33,10 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
-    compile 'com.android.support:recyclerview-v7:26.1.0'
-    compile 'com.google.code.gson:gson:2.7'
+    api 'com.android.support:recyclerview-v7:26.1.0'
+    api 'com.google.code.gson:gson:2.7'
 
-    if (utilsEverywhere == null) compile 'com.github.SenhLinsh:Utils-Everywhere:2.0.2' else compile project("$utilsEverywhere")
+    if (utilsEverywhere == null) api 'com.github.SenhLinsh:Utils-Everywhere:2.0.2'
+    else api project("$utilsEverywhere")
 
 }
