@@ -1,5 +1,6 @@
 package com.linsh.lshutils.utils;
 
+import android.content.Context;
 import android.content.pm.ApplicationInfo;
 
 import com.linsh.utilseverywhere.ContextUtils;
@@ -28,6 +29,13 @@ public class LogTracerUtils {
     static {
         traces = new LinkedList<>();
         extraTracesReference = new SoftReference<>(new LinkedList<String>());
+    }
+
+    private LogTracerUtils() {
+    }
+
+    private static Context getContext() {
+        return ContextUtils.get();
     }
 
     public static void init(int mainCount, int maxCount) {
@@ -63,7 +71,7 @@ public class LogTracerUtils {
     }
 
     private static boolean checkDebugMode() {
-        ApplicationInfo applicationInfo = ContextUtils.get().getApplicationInfo();
+        ApplicationInfo applicationInfo = getContext().getApplicationInfo();
         return applicationInfo != null && (applicationInfo.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
     }
 }

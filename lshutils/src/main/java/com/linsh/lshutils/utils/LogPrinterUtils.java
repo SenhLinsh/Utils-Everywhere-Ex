@@ -1,5 +1,6 @@
 package com.linsh.lshutils.utils;
 
+import android.content.Context;
 import android.os.Environment;
 
 import com.linsh.utilseverywhere.ContextUtils;
@@ -31,7 +32,14 @@ public class LogPrinterUtils {
     private static String sLogFilePath;
 
     static {
-        sLogFilePath = Environment.getExternalStorageDirectory() + "/" + ContextUtils.getPackageName() + "/LshLog.txt";
+        sLogFilePath = Environment.getExternalStorageDirectory() + "/" + getContext().getPackageName() + "/LshLog.txt";
+    }
+
+    private LogPrinterUtils() {
+    }
+
+    private static Context getContext() {
+        return ContextUtils.get();
     }
 
     public static void setLogFilePath(File filePath) {

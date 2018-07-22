@@ -3,6 +3,7 @@ package com.linsh.lshutils.handler;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 
@@ -26,6 +27,13 @@ public abstract class LshCrashHandler {
     private static final String KEY_LASTED_CRASH = "key_lasted_crash";
     private static LshCrashHandler mHandler;
     private Thread.UncaughtExceptionHandler mOldHandler;
+
+    private LshCrashHandler() {
+    }
+
+    private static Context getContext() {
+        return ContextUtils.get();
+    }
 
     public static void install(Application application, LshCrashHandler handler) {
         if (mHandler != null) {
@@ -62,9 +70,9 @@ public abstract class LshCrashHandler {
                     Class<? extends Activity> restartActivity = mHandler.onRestartAppIfNeeded();
                     if (restartActivity != null) {
                         try {
-                            Intent intent = new Intent(ContextUtils.get(), restartActivity);
+                            Intent intent = new Intent(getContext(), restartActivity);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            ContextUtils.get().startActivity(intent);
+                            getContext().startActivity(intent);
                         } catch (Exception e) {
                             e.printStackTrace();
                             handleByDefaultHandler(thread, thr);

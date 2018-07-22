@@ -26,7 +26,7 @@ public class WindowManagerHelper {
     private ArrayList<View> mViews;
 
     public WindowManagerHelper() {
-        mWindowManager = ((WindowManager) ContextUtils.get().getSystemService(Context.WINDOW_SERVICE));
+        mWindowManager = ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE));
         mViews = new ArrayList<>();
     }
 
@@ -94,5 +94,9 @@ public class WindowManagerHelper {
             }
         }
         mViews.clear();
+    }
+
+    private static Context getContext() {
+        return ContextUtils.get();
     }
 }

@@ -1,10 +1,11 @@
 package com.linsh.lshutils.utils;
 
+import android.content.Context;
 import android.os.Environment;
 
-import com.linsh.utilseverywhere.AppUtils;
 import com.linsh.utilseverywhere.ContextUtils;
 import com.linsh.utilseverywhere.FileUtils;
+import com.linsh.utilseverywhere.UEPermission;
 
 import java.io.File;
 
@@ -21,7 +22,14 @@ public class FileManagerUtils {
     /**
      * 本应用文件夹
      */
-    private static File sAppDir = new File(Environment.getExternalStorageDirectory(), AppUtils.getPackageName());
+    private static File sAppDir = new File(Environment.getExternalStorageDirectory(), getContext().getPackageName());
+
+    private FileManagerUtils() {
+    }
+
+    private static Context getContext() {
+        return ContextUtils.get();
+    }
 
     /**
      * 初始化本应用文件夹
@@ -36,13 +44,13 @@ public class FileManagerUtils {
      * 获取本应用文件夹
      */
     public static File getAppDir() {
-        if (FileUtils.checkPermission()) {
+        if (UEPermission.Storage.check()) {
             if (!sAppDir.exists()) {
                 sAppDir.mkdirs();
             }
             return sAppDir;
         }
-        return ContextUtils.getFilesDir();
+        return getContext().getFilesDir();
     }
 
     /**
@@ -52,9 +60,9 @@ public class FileManagerUtils {
      */
     public static File getDataDir() {
         if (FileUtils.checkPermission()) {
-            return ContextUtils.get().getExternalFilesDir(null);
+            return getContext().getExternalFilesDir(null);
         }
-        return ContextUtils.get().getFilesDir();
+        return getContext().getFilesDir();
     }
 
     /**

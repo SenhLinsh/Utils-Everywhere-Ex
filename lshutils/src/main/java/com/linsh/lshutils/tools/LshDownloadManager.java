@@ -69,7 +69,7 @@ public class LshDownloadManager {
      */
     public void cancel() {
         if (mRequestBuilder != null && mRequestId != 0) {
-            DownloadManager manager = (DownloadManager) ContextUtils.get().getSystemService(Context.DOWNLOAD_SERVICE);
+            DownloadManager manager = (DownloadManager) getContext().getSystemService(Context.DOWNLOAD_SERVICE);
             manager.remove(mRequestId);
             mRequestId = 0;
         }
@@ -91,7 +91,7 @@ public class LshDownloadManager {
      */
     private static float getProgress(long requestId) {
         if (requestId != 0) {
-            DownloadManager manager = (DownloadManager) ContextUtils.get().getSystemService(Context.DOWNLOAD_SERVICE);
+            DownloadManager manager = (DownloadManager) getContext().getSystemService(Context.DOWNLOAD_SERVICE);
             DownloadManager.Query query = new DownloadManager.Query().setFilterById(requestId);
             return getProgress(manager, query);
         }
@@ -122,7 +122,7 @@ public class LshDownloadManager {
             callback.onFailed("没有当前任务");
             return;
         }
-        final DownloadManager manager = (DownloadManager) ContextUtils.get().getSystemService(Context.DOWNLOAD_SERVICE);
+        final DownloadManager manager = (DownloadManager) getContext().getSystemService(Context.DOWNLOAD_SERVICE);
         final DownloadManager.Query query = new DownloadManager.Query().setFilterById(mRequestId);
         if (query == null) {
             callback.onFailed("没有当前任务");
@@ -185,7 +185,7 @@ public class LshDownloadManager {
      */
     public static File getFileIfDownloaded(long requestId) {
         File file = null;
-        DownloadManager manager = (DownloadManager) ContextUtils.get().getSystemService(Context.DOWNLOAD_SERVICE);
+        DownloadManager manager = (DownloadManager) getContext().getSystemService(Context.DOWNLOAD_SERVICE);
         DownloadManager.Query query = new DownloadManager.Query().setFilterById(requestId);
         Cursor cursor = manager.query(query);
         if (cursor != null) {
@@ -214,7 +214,7 @@ public class LshDownloadManager {
      * @param receiver 广播接收者
      */
     public void registerCompleteReceiver(BroadcastReceiver receiver) {
-        ContextUtils.get().registerReceiver(receiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+        getContext().registerReceiver(receiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
     }
 
     /**
@@ -223,7 +223,7 @@ public class LshDownloadManager {
      * @param receiver 广播接收者
      */
     public void unregisterReceiver(BroadcastReceiver receiver) {
-        ContextUtils.get().unregisterReceiver(receiver);
+        getContext().unregisterReceiver(receiver);
     }
 
     //================================================ 构建 Request ================================================//
@@ -339,7 +339,7 @@ public class LshDownloadManager {
             if (mRequestId != 0 && getProgress(mRequestId) == 1) {
                 return mRequestId;
             }
-            DownloadManager manager = (DownloadManager) ContextUtils.get().getSystemService(Context.DOWNLOAD_SERVICE);
+            DownloadManager manager = (DownloadManager) getContext().getSystemService(Context.DOWNLOAD_SERVICE);
             long id = manager.enqueue(mRequest);
             if (mRequestId != id) {
                 mRequestId = id;
@@ -369,5 +369,9 @@ public class LshDownloadManager {
          * @param progress 进度
          */
         void inProgress(float progress);
+    }
+
+    private static Context getContext() {
+        return ContextUtils.get();
     }
 }

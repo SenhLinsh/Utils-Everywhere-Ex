@@ -68,7 +68,7 @@ public class PropertiesFileUtils {
         File file = getPropertyFile(fileName);
         if (content != null && content.length() > 0) {
             try {
-                FileUtils.writeFile(file, content, false);
+                FileUtils.writeString(file, content);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -103,7 +103,6 @@ public class PropertiesFileUtils {
     public static String getString(String fileName) {
         File file = getPropertyFile(fileName);
         if (!file.exists()) return null;
-        StringBuilder stringBuilder = FileUtils.readFile(file);
-        return stringBuilder == null ? null : stringBuilder.toString();
+        return FileUtils.readAsString(file);
     }
 }
