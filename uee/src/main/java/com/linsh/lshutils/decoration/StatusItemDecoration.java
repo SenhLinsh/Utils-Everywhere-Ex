@@ -1,7 +1,6 @@
 package com.linsh.lshutils.decoration;
 
 import android.graphics.Canvas;
-import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import java.lang.ref.SoftReference;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * <pre>

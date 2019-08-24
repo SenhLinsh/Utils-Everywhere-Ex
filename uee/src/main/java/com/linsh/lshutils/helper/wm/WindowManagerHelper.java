@@ -1,7 +1,6 @@
 package com.linsh.lshutils.helper.wm;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -10,6 +9,8 @@ import android.view.WindowManager.LayoutParams;
 import com.linsh.utilseverywhere.ContextUtils;
 
 import java.util.ArrayList;
+
+import androidx.annotation.NonNull;
 
 /**
  * <pre>

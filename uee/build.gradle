@@ -9,7 +9,7 @@ android {
         versionCode 1
         versionName "2.0.0"
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -20,21 +20,16 @@ android {
     }
 }
 
-// 默认获取本地 Project
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
-def utilsEverywhere = properties.getProperty('utilsEverywhere')
-
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    implementation 'com.android.support:appcompat-v7:27.1.1'
     testImplementation 'junit:junit:4.12'
-
-    implementation 'com.android.support:recyclerview-v7:27.1.1'
+    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'com.google.code.gson:gson:2.8.0'
 
-    if (utilsEverywhere == null) api 'com.github.SenhLinsh:Utils-Everywhere:2.0.2'
-    else api project("$utilsEverywhere")
-
+    try {
+        implementation project(':ue')
+    } catch (Exception ignored) {
+        implementation 'com.github.SenhLinsh:Utils-Everywhere:2.1.4'
+    }
 }

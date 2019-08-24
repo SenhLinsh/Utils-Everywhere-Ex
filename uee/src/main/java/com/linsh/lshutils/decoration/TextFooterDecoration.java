@@ -3,8 +3,6 @@ package com.linsh.lshutils.decoration;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.text.BoringLayout;
 import android.text.Layout;
 import android.text.StaticLayout;
@@ -12,6 +10,9 @@ import android.text.TextPaint;
 import android.view.View;
 
 import com.linsh.utilseverywhere.UnitConverseUtils;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * <pre>

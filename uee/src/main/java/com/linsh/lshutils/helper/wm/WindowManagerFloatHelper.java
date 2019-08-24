@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,6 +14,8 @@ import android.view.animation.OvershootInterpolator;
 
 import com.linsh.utilseverywhere.MathUtils;
 import com.linsh.utilseverywhere.ScreenUtils;
+
+import androidx.annotation.NonNull;
 
 /**
  * <pre>
