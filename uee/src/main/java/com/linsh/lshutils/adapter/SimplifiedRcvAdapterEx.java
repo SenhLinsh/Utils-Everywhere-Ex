@@ -18,9 +18,9 @@ import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import java.util.List;
-
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
 
 /**
  * <pre>
@@ -30,7 +30,7 @@ import androidx.recyclerview.widget.RecyclerView;
  *    desc   : 简化的 RecyclerView Adapter 基类, 可直接使用内部类创建继承的子类实现 Adapter 功能
  * </pre>
  */
-public abstract class SimplifiedRcvAdapterEx<T> extends RecyclerView.Adapter<SimplifiedRcvAdapterEx.LshSimplifiedViewHolder> {
+public abstract class SimplifiedRcvAdapterEx<T> extends RecyclerView.Adapter<SimplifiedRcvAdapterEx.SimplifiedViewHolderEx> {
 
     private List<T> list;
     private int layoutId;
@@ -41,13 +41,13 @@ public abstract class SimplifiedRcvAdapterEx<T> extends RecyclerView.Adapter<Sim
     }
 
     @Override
-    public LshSimplifiedViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public SimplifiedViewHolderEx onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(layoutId, parent, false);
-        LshSimplifiedViewHolder viewHolder = new LshSimplifiedViewHolder(itemView);
+        SimplifiedViewHolderEx viewHolder = new SimplifiedViewHolderEx(itemView);
         if (mOnItemClickListener != null) {
             viewHolder.setOnItemClickListener(new OnItemClickListener<Void>() {
                 @Override
-                public void onItemClick(LshSimplifiedViewHolder viewHolder, Void data, int position) {
+                public void onItemClick(SimplifiedViewHolderEx viewHolder, Void data, int position) {
                     mOnItemClickListener.onItemClick(viewHolder, list.get(position), position);
                 }
             });
@@ -56,12 +56,12 @@ public abstract class SimplifiedRcvAdapterEx<T> extends RecyclerView.Adapter<Sim
     }
 
     @Override
-    public void onBindViewHolder(LshSimplifiedViewHolder holder, int position) {
+    public void onBindViewHolder(SimplifiedViewHolderEx holder, int position) {
         T data = list.get(position);
         onBindViewHolder(holder, data, position);
     }
 
-    protected abstract void onBindViewHolder(LshSimplifiedViewHolder holder, T data, int position);
+    protected abstract void onBindViewHolder(SimplifiedViewHolderEx holder, T data, int position);
 
     public void setData(List<T> list) {
         this.list = list;
@@ -83,16 +83,16 @@ public abstract class SimplifiedRcvAdapterEx<T> extends RecyclerView.Adapter<Sim
     }
 
     public interface OnItemClickListener<T> {
-        void onItemClick(LshSimplifiedViewHolder viewHolder, T data, int position);
+        void onItemClick(SimplifiedViewHolderEx viewHolder, T data, int position);
     }
 
-    public static class LshSimplifiedViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class SimplifiedViewHolderEx extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private OnItemClickListener<Void> mOnItemClickListener;
         private SparseArray<View> mViews;
         private int curItemPosition = -1;
 
-        public LshSimplifiedViewHolder(View itemView) {
+        public SimplifiedViewHolderEx(View itemView) {
             super(itemView);
             mViews = new SparseArray<>();
             itemView.setOnClickListener(this);
@@ -107,56 +107,56 @@ public abstract class SimplifiedRcvAdapterEx<T> extends RecyclerView.Adapter<Sim
             return (T) view;
         }
 
-        public LshSimplifiedViewHolder setText(int viewId, String text) {
+        public SimplifiedViewHolderEx setText(int viewId, String text) {
             TextView tv = getView(viewId);
             tv.setText(text);
             return this;
         }
 
-        public LshSimplifiedViewHolder setImageResource(int viewId, int resId) {
+        public SimplifiedViewHolderEx setImageResource(int viewId, int resId) {
             ImageView view = getView(viewId);
             view.setImageResource(resId);
             return this;
         }
 
-        public LshSimplifiedViewHolder setImageBitmap(int viewId, Bitmap bitmap) {
+        public SimplifiedViewHolderEx setImageBitmap(int viewId, Bitmap bitmap) {
             ImageView view = getView(viewId);
             view.setImageBitmap(bitmap);
             return this;
         }
 
-        public LshSimplifiedViewHolder setImageDrawable(int viewId, Drawable drawable) {
+        public SimplifiedViewHolderEx setImageDrawable(int viewId, Drawable drawable) {
             ImageView view = getView(viewId);
             view.setImageDrawable(drawable);
             return this;
         }
 
-        public LshSimplifiedViewHolder setBackgroundColor(int viewId, int color) {
+        public SimplifiedViewHolderEx setBackgroundColor(int viewId, int color) {
             View view = getView(viewId);
             view.setBackgroundColor(color);
             return this;
         }
 
-        public LshSimplifiedViewHolder setBackgroundRes(int viewId, int backgroundRes) {
+        public SimplifiedViewHolderEx setBackgroundRes(int viewId, int backgroundRes) {
             View view = getView(viewId);
             view.setBackgroundResource(backgroundRes);
             return this;
         }
 
-        public LshSimplifiedViewHolder setTextColor(int viewId, int textColor) {
+        public SimplifiedViewHolderEx setTextColor(int viewId, int textColor) {
             TextView view = getView(viewId);
             view.setTextColor(textColor);
             return this;
         }
 
-        public LshSimplifiedViewHolder setTextColorRes(int viewId, int textColorRes) {
+        public SimplifiedViewHolderEx setTextColorRes(int viewId, int textColorRes) {
             TextView view = getView(viewId);
             view.setTextColor(view.getContext().getResources().getColor(textColorRes));
             return this;
         }
 
         @SuppressLint("NewApi")
-        public LshSimplifiedViewHolder setAlpha(int viewId, float value) {
+        public SimplifiedViewHolderEx setAlpha(int viewId, float value) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                 getView(viewId).setAlpha(value);
             } else {
@@ -169,19 +169,19 @@ public abstract class SimplifiedRcvAdapterEx<T> extends RecyclerView.Adapter<Sim
             return this;
         }
 
-        public LshSimplifiedViewHolder setVisible(int viewId, boolean visible) {
+        public SimplifiedViewHolderEx setVisible(int viewId, boolean visible) {
             View view = getView(viewId);
             view.setVisibility(visible ? View.VISIBLE : View.GONE);
             return this;
         }
 
-        public LshSimplifiedViewHolder linkify(int viewId) {
+        public SimplifiedViewHolderEx linkify(int viewId) {
             TextView view = getView(viewId);
             Linkify.addLinks(view, Linkify.ALL);
             return this;
         }
 
-        public LshSimplifiedViewHolder setTypeface(Typeface typeface, int... viewIds) {
+        public SimplifiedViewHolderEx setTypeface(Typeface typeface, int... viewIds) {
             for (int viewId : viewIds) {
                 TextView view = getView(viewId);
                 view.setTypeface(typeface);
@@ -190,51 +190,51 @@ public abstract class SimplifiedRcvAdapterEx<T> extends RecyclerView.Adapter<Sim
             return this;
         }
 
-        public LshSimplifiedViewHolder setProgress(int viewId, int progress) {
+        public SimplifiedViewHolderEx setProgress(int viewId, int progress) {
             ProgressBar view = getView(viewId);
             view.setProgress(progress);
             return this;
         }
 
-        public LshSimplifiedViewHolder setProgress(int viewId, int progress, int max) {
+        public SimplifiedViewHolderEx setProgress(int viewId, int progress, int max) {
             ProgressBar view = getView(viewId);
             view.setMax(max);
             view.setProgress(progress);
             return this;
         }
 
-        public LshSimplifiedViewHolder setMax(int viewId, int max) {
+        public SimplifiedViewHolderEx setMax(int viewId, int max) {
             ProgressBar view = getView(viewId);
             view.setMax(max);
             return this;
         }
 
-        public LshSimplifiedViewHolder setRating(int viewId, float rating) {
+        public SimplifiedViewHolderEx setRating(int viewId, float rating) {
             RatingBar view = getView(viewId);
             view.setRating(rating);
             return this;
         }
 
-        public LshSimplifiedViewHolder setRating(int viewId, float rating, int max) {
+        public SimplifiedViewHolderEx setRating(int viewId, float rating, int max) {
             RatingBar view = getView(viewId);
             view.setMax(max);
             view.setRating(rating);
             return this;
         }
 
-        public LshSimplifiedViewHolder setTag(int viewId, Object tag) {
+        public SimplifiedViewHolderEx setTag(int viewId, Object tag) {
             View view = getView(viewId);
             view.setTag(tag);
             return this;
         }
 
-        public LshSimplifiedViewHolder setTag(int viewId, int key, Object tag) {
+        public SimplifiedViewHolderEx setTag(int viewId, int key, Object tag) {
             View view = getView(viewId);
             view.setTag(key, tag);
             return this;
         }
 
-        public LshSimplifiedViewHolder setChecked(int viewId, boolean checked) {
+        public SimplifiedViewHolderEx setChecked(int viewId, boolean checked) {
             Checkable view = (Checkable) getView(viewId);
             view.setChecked(checked);
             return this;
