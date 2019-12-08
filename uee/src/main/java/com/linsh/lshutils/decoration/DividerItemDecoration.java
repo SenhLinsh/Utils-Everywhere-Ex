@@ -86,12 +86,14 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
         mDivider = drawable;
     }
 
-    public void setShowDividers(@DividerMode int flag) {
+    public DividerItemDecoration setShowDividers(@DividerMode int flag) {
         mShowDividers = flag;
+        return this;
     }
 
-    public void setScaleType(@ScaleType int scaleType) {
+    public DividerItemDecoration setScaleType(@ScaleType int scaleType) {
         mScaleType = scaleType;
+        return this;
     }
 
     /**
