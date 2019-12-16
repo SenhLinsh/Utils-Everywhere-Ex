@@ -16,7 +16,7 @@ public class ToastUtilsEx {
     /**
      * 切换到 UI 线程中弹出 Toast
      */
-    public static void post(final String text) {
+    public static void postShow(final String text) {
         HandlerUtils.postRunnable(new Runnable() {
             @Override
             public void run() {
@@ -28,7 +28,7 @@ public class ToastUtilsEx {
     /**
      * 切换到 UI 线程中弹出 Toast
      */
-    public static void postLong(final String text) {
+    public static void postShowLong(final String text) {
         HandlerUtils.postRunnable(new Runnable() {
             @Override
             public void run() {
