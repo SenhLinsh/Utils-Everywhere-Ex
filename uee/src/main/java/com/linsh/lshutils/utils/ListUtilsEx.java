@@ -1,11 +1,10 @@
 package com.linsh.lshutils.utils;
 
-import java.util.Collections;
-import java.util.Comparator;
-
-import com.linsh.utilseverywhere.interfaces.Action;
+import com.linsh.utilseverywhere.interfaces.Function;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -144,14 +143,14 @@ public class ListUtilsEx {
      * 将指定的集合转成 String 集合, 即将集合的元素转成或抽取成 String
      *
      * @param list   源集合
-     * @param action 将元素转成 String 的可执行任务
+     * @param function 将元素转成 String 的可执行任务
      * @return 新的 String 集合
      */
-    public static <T> List<String> toStringList(List<T> list, Action<String, T> action) {
+    public static <T> List<String> toStringList(List<T> list, Function<String, T> function) {
         List<String> stringList = new ArrayList<>();
-        if (list != null && action != null) {
+        if (list != null && function != null) {
             for (T t : list) {
-                stringList.add(action.call(t));
+                stringList.add(function.call(t));
             }
         }
         return stringList;
