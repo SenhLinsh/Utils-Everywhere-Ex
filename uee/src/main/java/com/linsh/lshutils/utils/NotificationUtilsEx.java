@@ -1,9 +1,12 @@
 package com.linsh.lshutils.utils;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.os.Build;
+import android.service.notification.StatusBarNotification;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.FloatRange;
@@ -21,6 +24,9 @@ import com.linsh.utilseverywhere.MathUtils;
  * </pre>
  */
 public class NotificationUtilsEx {
+
+    private static final String DEFAULT_CHANNEL_ID = "default";
+    private static final String DEFAULT_CHANNEL_NAME = "default";
 
     private NotificationUtilsEx() {
     }
@@ -46,7 +52,7 @@ public class NotificationUtilsEx {
      */
     public static void showLoading(int id, @Nullable String title, @Nullable String text, @DrawableRes int smallIcon) {
         NotificationManager manager = (NotificationManager) ContextUtils.getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.notify(id, build(title, text, smallIcon, null)
+        manager.notify(id, build(DEFAULT_CHANNEL_ID, title, text, smallIcon, null)
                 .setProgress(100, 0, true)
                 .build());
     }
@@ -74,7 +80,7 @@ public class NotificationUtilsEx {
      */
     public static void showLoading(int id, @Nullable String title, @Nullable String text, @DrawableRes int smallIcon, @FloatRange(from = 0, to = 1) float progress) {
         NotificationManager manager = (NotificationManager) ContextUtils.getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.notify(id, build(title, text, smallIcon, null)
+        manager.notify(id, build(DEFAULT_CHANNEL_ID, title, text, smallIcon, null)
                 .setProgress(100, MathUtils.limit((int) (progress * 100), 100, 0), false)
                 .build());
     }
@@ -127,7 +133,7 @@ public class NotificationUtilsEx {
     public static void show(int id, @Nullable String title, @Nullable String text,
                             @DrawableRes int smallIcon, @Nullable PendingIntent pendingIntent) {
         NotificationManager manager = (NotificationManager) ContextUtils.getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.notify(id, build(title, text, smallIcon, pendingIntent).build());
+        manager.notify(id, build(DEFAULT_CHANNEL_ID, title, text, smallIcon, pendingIntent).build());
     }
 
     /**
@@ -140,14 +146,65 @@ public class NotificationUtilsEx {
      */
     public static Notification.Builder build(@Nullable String title, @Nullable String text,
                                              @DrawableRes int smallIcon, @Nullable PendingIntent pendingIntent) {
-        Notification.Builder builder = new Notification.Builder(ContextUtils.get());
+        return build(DEFAULT_CHANNEL_ID, title, text, smallIcon, pendingIntent);
+    }
+
+    /**
+     * 构建 Notification
+     *
+     * @param title         标题
+     * @param text          文本
+     * @param smallIcon     小图标, 在标题栏显示. 注意: 显示只保留 alpha 通道
+     * @param pendingIntent 点击触发的 Intent
+     */
+    public static Notification.Builder build(String channelId, @Nullable String title, @Nullable String text,
+                                             int smallIcon, @Nullable PendingIntent pendingIntent) {
+        Notification.Builder builder;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            checkChannel();
+            builder = new Notification.Builder(ContextUtils.get(), channelId);
+        } else {
+            builder = new Notification.Builder(ContextUtils.get());
+        }
         if (title != null) builder.setContentTitle(title);
         if (text != null) builder.setContentText(text);
-        builder.setSmallIcon(smallIcon);
+        if (smallIcon > 0) builder.setSmallIcon(smallIcon);
         if (pendingIntent != null) builder.setContentIntent(pendingIntent);
         return builder.setWhen(System.currentTimeMillis())
                 .setAutoCancel(true)
                 .setDefaults(Notification.DEFAULT_SOUND);
     }
 
+    /**
+     * 取消 Notification
+     *
+     * @param id Notification id
+     */
+    public static void cancel(int id) {
+        NotificationManager manager = (NotificationManager) ContextUtils.getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.cancel(id);
+    }
+
+    /**
+     * 判断是否显示通知
+     */
+    public static boolean isShowing() {
+        NotificationManager manager = (NotificationManager) ContextUtils.getSystemService(Context.NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            StatusBarNotification[] notifications = manager.getActiveNotifications();
+            return notifications != null && notifications.length > 0;
+        }
+        return false;
+    }
+
+    private static void checkChannel() {
+        NotificationManager manager = (NotificationManager) ContextUtils.getSystemService(Context.NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = manager.getNotificationChannel(DEFAULT_CHANNEL_ID);
+            if (channel == null) {
+                channel = new NotificationChannel(DEFAULT_CHANNEL_ID, DEFAULT_CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);
+                manager.createNotificationChannel(channel);
+            }
+        }
+    }
 }
