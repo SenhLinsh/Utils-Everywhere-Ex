@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:src="@drawable/ic_status_empty"/>
+        android:src="@drawable/uee_ic_status_empty"/>
 
     <TextView
         android:id="@+id/tv_item_footer_empty_text"

@@ -67,10 +67,10 @@ public abstract class HeaderFooterRcvAdapterEx<T> extends RecyclerView.Adapter<R
         int viewType = getItemViewType(position);
         if (viewType == VIEW_TYPE_HEADER) {
             onBindHeaderViewHolder(holder);
-            holder.itemView.setTag(R.id.tag_item_view, -1);
+            holder.itemView.setTag(R.id.uee_tag_item_view, -1);
         } else if (viewType == VIEW_TYPE_FOOTER) {
             onBindFooterViewHolder(holder);
-            holder.itemView.setTag(R.id.tag_item_view, -2);
+            holder.itemView.setTag(R.id.uee_tag_item_view, -2);
         } else {
             position = hasHeader ? position - 1 : position;
             T t = null;
@@ -78,7 +78,7 @@ public abstract class HeaderFooterRcvAdapterEx<T> extends RecyclerView.Adapter<R
                 t = data.get(position);
             }
             onBindItemViewHolder(holder, t, position);
-            holder.itemView.setTag(R.id.tag_item_view, position);
+            holder.itemView.setTag(R.id.uee_tag_item_view, position);
         }
     }
 
@@ -104,7 +104,7 @@ public abstract class HeaderFooterRcvAdapterEx<T> extends RecyclerView.Adapter<R
 
     @Override
     public void onClick(View v) {
-        Object tag = v.getTag(R.id.tag_item_view);
+        Object tag = v.getTag(R.id.uee_tag_item_view);
         if (mOnItemClickListener != null && tag != null && tag instanceof Integer) {
             int position = (int) tag;
             if (position == -1) {
@@ -149,7 +149,7 @@ public abstract class HeaderFooterRcvAdapterEx<T> extends RecyclerView.Adapter<R
 
     @Override
     public boolean onLongClick(View v) {
-        Object tag = v.getTag(R.id.tag_item_view);
+        Object tag = v.getTag(R.id.uee_tag_item_view);
         if (mOnItemLongClickListener != null && tag != null && tag instanceof Integer) {
             int position = (int) tag;
             if (position == -1) {

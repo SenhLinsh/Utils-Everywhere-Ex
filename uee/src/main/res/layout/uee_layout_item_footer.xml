@@ -16,7 +16,7 @@
             android:id="@+id/pb_layout_item_footer_loading"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:indeterminateDrawable="@drawable/anim_progress_loading"/>
+            android:indeterminateDrawable="@drawable/uee_anim_progress_loading"/>
 
         <TextView
             android:id="@+id/tv_layout_item_footer_text"

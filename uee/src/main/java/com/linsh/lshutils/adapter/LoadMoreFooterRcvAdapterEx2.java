@@ -52,7 +52,7 @@ public abstract class LoadMoreFooterRcvAdapterEx2 extends BaseRcvAdapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == itemTypeFooter) {
-            return new FooterHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_item_footer, parent, false));
+            return new FooterHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.uee_layout_item_footer, parent, false));
         } else {
             return onCreateContentViewHolder(parent, viewType);
         }

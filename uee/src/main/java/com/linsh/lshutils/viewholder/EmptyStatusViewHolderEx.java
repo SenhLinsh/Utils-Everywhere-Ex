@@ -21,7 +21,7 @@ public class EmptyStatusViewHolderEx extends ViewHolderEx {
     public TextView tvText;
 
     public EmptyStatusViewHolderEx(ViewGroup parent) {
-        super(R.layout.item_footer_empty, parent);
+        super(R.layout.uee_item_footer_empty, parent);
     }
 
     @Override

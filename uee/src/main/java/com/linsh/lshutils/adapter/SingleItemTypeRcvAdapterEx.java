@@ -37,7 +37,7 @@ public abstract class SingleItemTypeRcvAdapterEx<T, H extends RecyclerView.ViewH
 
     @Override
     public void onBindViewHolder(H holder, int position) {
-        holder.itemView.setTag(R.id.tag_item_view, position);
+        holder.itemView.setTag(R.id.uee_tag_item_view, position);
         onBindViewHolder(holder, data.get(position), position);
     }
 
@@ -59,7 +59,7 @@ public abstract class SingleItemTypeRcvAdapterEx<T, H extends RecyclerView.ViewH
 
     @Override
     public void onClick(View v) {
-        Object tag = v.getTag(R.id.tag_item_view);
+        Object tag = v.getTag(R.id.uee_tag_item_view);
         if (mOnItemClickListener != null && tag != null && tag instanceof Integer) {
             mOnItemClickListener.onItemClick((Integer) tag);
         }
@@ -77,7 +77,7 @@ public abstract class SingleItemTypeRcvAdapterEx<T, H extends RecyclerView.ViewH
 
     @Override
     public boolean onLongClick(View v) {
-        Object tag = v.getTag(R.id.tag_item_view);
+        Object tag = v.getTag(R.id.uee_tag_item_view);
         if (mOnItemLongClickListener != null && tag != null && tag instanceof Integer) {
             mOnItemLongClickListener.onItemLongClick(v, (Integer) tag);
             return true;

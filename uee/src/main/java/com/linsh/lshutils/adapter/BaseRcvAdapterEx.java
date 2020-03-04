@@ -42,7 +42,7 @@ public abstract class BaseRcvAdapterEx<T, H extends ViewHolderEx> extends BaseRc
 
     @Override
     public void onBindViewHolder(H holder, int position) {
-        holder.itemView.setTag(R.id.tag_view_holder, holder);
+        holder.itemView.setTag(R.id.uee_tag_view_holder, holder);
         T data = null;
         if (this.data != null && position < this.data.size()) {
             data = this.data.get(position);
@@ -58,7 +58,7 @@ public abstract class BaseRcvAdapterEx<T, H extends ViewHolderEx> extends BaseRc
     public void onClick(View v) {
         ViewGroup.LayoutParams params = v.getLayoutParams();
         if (params instanceof RecyclerView.LayoutParams) {
-            Object tag = v.getTag(R.id.tag_view_holder);
+            Object tag = v.getTag(R.id.uee_tag_view_holder);
             if (tag instanceof ViewHolderEx) {
                 ViewHolderEx holder = (ViewHolderEx) tag;
                 if (mOnItemClickListener != null) {
@@ -72,7 +72,7 @@ public abstract class BaseRcvAdapterEx<T, H extends ViewHolderEx> extends BaseRc
     public boolean onLongClick(View v) {
         ViewGroup.LayoutParams params = v.getLayoutParams();
         if (params instanceof RecyclerView.LayoutParams) {
-            Object tag = v.getTag(R.id.tag_view_holder);
+            Object tag = v.getTag(R.id.uee_tag_view_holder);
             if (tag instanceof ViewHolderEx) {
                 ViewHolderEx holder = (ViewHolderEx) tag;
                 if (mOnItemLongClickListener != null) {

@@ -19,7 +19,7 @@ public class BottomFooterViewHolderEx extends ViewHolderEx {
     public TextView tvBottom;
 
     public BottomFooterViewHolderEx(ViewGroup parent) {
-        super(R.layout.item_footer_bottom, parent);
+        super(R.layout.uee_item_footer_bottom, parent);
     }
 
     @Override

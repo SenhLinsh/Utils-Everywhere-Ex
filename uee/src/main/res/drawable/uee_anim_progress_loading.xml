@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rotate xmlns:android="http://schemas.android.com/apk/res/android"
-        android:drawable="@drawable/icon_indeterminate_loading2"
+        android:drawable="@drawable/uee_ic_indeterminate_loading2"
         android:pivotX="50%"
         android:pivotY="50%"
     />
