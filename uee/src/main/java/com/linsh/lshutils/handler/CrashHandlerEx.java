@@ -6,14 +6,14 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 
-import com.linsh.utilseverywhere.ActivityLifecycleUtils;
+import androidx.annotation.NonNull;
+
+import com.linsh.lshutils.utils.ActivityLifecycleUtilsEx;
 import com.linsh.utilseverywhere.AppUtils;
 import com.linsh.utilseverywhere.ContextUtils;
 import com.linsh.utilseverywhere.SharedPreferenceUtils;
 
 import java.util.List;
-
-import androidx.annotation.NonNull;
 
 /**
  * <pre>
@@ -46,7 +46,7 @@ public abstract class CrashHandlerEx {
             mHandler.mOldHandler = oldHandler;
         }
 
-        ActivityLifecycleUtils.init(application);
+        ActivityLifecycleUtilsEx.init(application);
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
             @Override
             public void uncaughtException(Thread thread, Throwable thr) {
@@ -59,8 +59,8 @@ public abstract class CrashHandlerEx {
                 }
                 refreshCrashTime();
 
-                if (!ActivityLifecycleUtils.isAppInBackground()) {
-                    List<Activity> activities = ActivityLifecycleUtils.getCreatedActivities();
+                if (!ActivityLifecycleUtilsEx.isAppInBackground()) {
+                    List<Activity> activities = ActivityLifecycleUtilsEx.getCreatedActivities();
                     for (int i = activities.size() - 1; i >= 0; i--) {
                         Activity activity = activities.get(i);
                         if (activity != null) {
