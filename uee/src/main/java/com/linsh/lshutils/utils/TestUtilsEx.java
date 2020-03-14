@@ -1,5 +1,7 @@
 package com.linsh.lshutils.utils;
 
+import java.util.Stack;
+
 /**
  * <pre>
  *    author : Senh Linsh
@@ -7,10 +9,12 @@ package com.linsh.lshutils.utils;
  *    date   : 2017/11/13
  *    desc   : 工具类: 测试相关
  *
- *          该工具类不再使用
+ *            推荐用于 Java 或 Android 的 test case 中
  * </pre>
  */
 public class TestUtilsEx {
+
+    private static final Stack<Long> sRunTimes = new Stack<>();
 
     private TestUtilsEx() {
     }
@@ -83,5 +87,20 @@ public class TestUtilsEx {
             runnable.run();
         }
         return System.currentTimeMillis() - startTime;
+    }
+
+    /**
+     * 获取某段代码的运行时长, 该方法为起始标志, 需配合 {@link TestUtilsEx#endRunTime()} 一起使用
+     */
+    public static void startRunTime() {
+        sRunTimes.push(System.currentTimeMillis());
+    }
+
+    /**
+     * 获取某段代码的运行时长, 该方法为结束标志, 返回起始至结束的运行时长, 需配合 {@link TestUtilsEx#startRunTime()} 一起使用
+     */
+    public static long endRunTime() {
+        if (sRunTimes.isEmpty()) return -1;
+        return System.currentTimeMillis() - sRunTimes.pop();
     }
 }
