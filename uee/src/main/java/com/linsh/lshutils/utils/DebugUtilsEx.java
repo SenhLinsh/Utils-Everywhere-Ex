@@ -17,7 +17,7 @@ public class DebugUtilsEx {
     /**
      * 判断应用是否处于 Debuggable 模式
      */
-    private static boolean isDebuggable() {
+    public static boolean isDebuggable() {
         ApplicationInfo applicationInfo = ContextUtils.get().getApplicationInfo();
         return applicationInfo != null && (applicationInfo.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
     }
