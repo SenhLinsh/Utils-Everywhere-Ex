@@ -92,12 +92,12 @@ public class TestUtilsEx {
     /**
      * 获取某段代码的运行时长, 该方法为起始标志, 需配合 {@link TestUtilsEx#endRunTime()} 一起使用
      */
-    public static void startRunTime() {
+    public static void beginRunTime() {
         sRunTimes.push(System.currentTimeMillis());
     }
 
     /**
-     * 获取某段代码的运行时长, 该方法为结束标志, 返回起始至结束的运行时长, 需配合 {@link TestUtilsEx#startRunTime()} 一起使用
+     * 获取某段代码的运行时长, 该方法为结束标志, 返回起始至结束的运行时长, 需配合 {@link TestUtilsEx#beginRunTime()} 一起使用
      */
     public static long endRunTime() {
         if (sRunTimes.isEmpty()) return -1;
