@@ -3,6 +3,7 @@ package com.linsh.lshutils.utils;
 import android.app.Activity;
 import android.os.SystemClock;
 import android.view.MotionEvent;
+import android.view.View;
 
 import com.linsh.utilseverywhere.HandlerUtils;
 import com.linsh.utilseverywhere.RandomUtils;
@@ -55,5 +56,27 @@ public class ActivityUtilsEx {
                 activity.dispatchTouchEvent(event);
             }
         }, RandomUtils.getInt(600, 1200));
+    }
+
+    /**
+     * 获取 Activity 的 DecorView
+     *
+     * @param activity Activity
+     * @return DecorView
+     */
+    public static View getDecorView(final Activity activity) {
+        return activity.getWindow().getDecorView();
+    }
+
+    /**
+     * 获取 Activity 的 ContentView
+     * <p>
+     * 该 ContentView 为 Activity setContentView 的父布局
+     *
+     * @param activity Activity
+     * @return DecorView
+     */
+    public static View getContentView(final Activity activity) {
+        return activity.findViewById(android.R.id.content);
     }
 }
