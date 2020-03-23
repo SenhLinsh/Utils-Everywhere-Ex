@@ -21,6 +21,23 @@ public class ListUtilsEx {
     }
 
     /**
+     * 查找元素在集合中的索引
+     *
+     * @param list 集合
+     * @param item 集合中的元素
+     * @return 索引, 如果不存在则返回 -1
+     */
+    public static <T> int indexOf(List<T> list, T item) {
+        if (list != null) {
+            for (int i = 0; i < list.size(); i++) {
+                if (list.get(i) == item)
+                    return i;
+            }
+        }
+        return -1;
+    }
+
+    /**
      * 排序
      */
     public static <T extends Comparable<? super T>> void sort(List<T> list) {
@@ -142,7 +159,7 @@ public class ListUtilsEx {
     /**
      * 将指定的集合转成 String 集合, 即将集合的元素转成或抽取成 String
      *
-     * @param list   源集合
+     * @param list     源集合
      * @param function 将元素转成 String 的可执行任务
      * @return 新的 String 集合
      */
