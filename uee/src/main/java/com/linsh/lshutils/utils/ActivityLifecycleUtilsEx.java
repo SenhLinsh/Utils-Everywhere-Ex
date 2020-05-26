@@ -159,10 +159,6 @@ public class ActivityLifecycleUtilsEx {
      */
     public static Activity getTopActivity() {
         check();
-        return getTopActivitySafely();
-    }
-
-    static Activity getTopActivitySafely() {
         Activity top = null;
         if (sCreatedActivities != null) {
             Set<Map.Entry<Integer, ActivityStatus>> entries = sCreatedActivities.entrySet();
@@ -190,6 +186,38 @@ public class ActivityLifecycleUtilsEx {
         }
         return list;
     }
+
+    /**
+     * 查找已经启动的 Activity
+     *
+     * @param activityClass Activity 类型
+     * @return 返回最早打开的 Activity
+     */
+    public static Activity findCreatedActivity(Class<? extends Activity> activityClass) {
+        check();
+        for (Map.Entry<Integer, ActivityStatus> entry : sCreatedActivities.entrySet()) {
+            Activity activity = entry.getValue().activityRef.get();
+            if (activity != null && activityClass.isAssignableFrom(activity.getClass())) {
+                return activity;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 查找已经启动的 Activity
+     *
+     * @param hashCode 该 Activity 实例的 hashCode
+     */
+    public static Activity findCreatedActivity(int hashCode) {
+        check();
+        ActivityStatus activityStatus = sCreatedActivities.get(hashCode);
+        if (activityStatus != null) {
+            return activityStatus.activityRef.get();
+        }
+        return null;
+    }
+
 
     /**
      * 检查该工具类是否被初始化, 没有初始化则抛出异常
