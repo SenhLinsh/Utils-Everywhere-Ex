@@ -8,12 +8,10 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
-import android.os.Build;
 import android.view.View;
 
 import com.linsh.utilseverywhere.BitmapUtils;
 import com.linsh.utilseverywhere.ColorUtils;
-import com.linsh.utilseverywhere.DrawableSelectors;
 import com.linsh.utilseverywhere.DrawableUtils;
 
 /**
@@ -27,31 +25,6 @@ import com.linsh.utilseverywhere.DrawableUtils;
 public class BackgroundUtilsEx {
 
     private BackgroundUtilsEx() {
-    }
-
-    /**
-     * 给 View 设置背景, 用于简化 SDK 版本判断
-     *
-     * @param view     View
-     * @param drawable 背景
-     */
-    public static void setBackground(View view, Drawable drawable) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            view.setBackground(drawable);
-        } else {
-            view.setBackgroundDrawable(drawable);
-        }
-    }
-
-    /**
-     * 给 View 添加触按效果, 触按效果为混合一个透明度为 30% 的黑色背景
-     *
-     * @param views 指定添加效果的 View 或多个 View
-     */
-    public static void addPressedEffect(View... views) {
-        for (View view : views) {
-            addPressedEffect(view, 0x33333333);
-        }
     }
 
     /**
@@ -71,116 +44,85 @@ public class BackgroundUtilsEx {
      * @param color 覆盖触按状态的颜色
      */
     public static void addPressedEffect(View view, int color) {
-        Drawable pressedDr = null;
-        Drawable background = view.getBackground();
-        if (Color.alpha(color) == 0xFF) {
-            if (background instanceof StateListDrawable) {
-                ((StateListDrawable) background).addState(new int[]{android.R.attr.state_pressed}, new ColorDrawable(color));
-                return;
-            } else {
-                pressedDr = new ColorDrawable(color);
-            }
-        } else {
-            if (background == null) {
-                pressedDr = new ColorDrawable(color);
-            } else if (background instanceof ColorDrawable) {
-                int fgColor = ((ColorDrawable) background).getColor();
-                int pressedColor = ColorUtils.coverColor(fgColor, color);
-                pressedDr = new ColorDrawable(pressedColor);
-            } else if (background instanceof BitmapDrawable) {
-                Bitmap fgBitmap = ((BitmapDrawable) background).getBitmap();
-                Bitmap pressedBitmap = BitmapUtils.addColorMask(fgBitmap, color, false);
-                pressedDr = BitmapUtils.toDrawable(pressedBitmap);
-            } else if (background instanceof GradientDrawable) {
-                GradientDrawable gradientDrawable = (GradientDrawable) background;
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                    ColorStateList stateList = gradientDrawable.getColor();
-                    if (stateList != null) {
-                        int normalColor = stateList.getColorForState(new int[]{}, Color.TRANSPARENT);
-                        int enabledColor = stateList.getColorForState(new int[]{android.R.attr.state_enabled}, Color.TRANSPARENT);
-                        int selectedColor = stateList.getColorForState(new int[]{android.R.attr.state_selected}, Color.TRANSPARENT);
-                        int pressedColor = ColorUtils.coverColor(normalColor, color);
-                        gradientDrawable.setColor(new ColorStateList(new int[][]{new int[]{android.R.attr.state_selected},
-                                new int[]{android.R.attr.state_pressed}, new int[]{android.R.attr.state_enabled}, new int[]{}},
-                                new int[]{selectedColor, pressedColor, enabledColor, normalColor}));
-                    } else {
-                        gradientDrawable.setColor(new ColorStateList(new int[][]{new int[]{android.R.attr.state_selected}}, new int[]{color}));
-                    }
-                    return;
-                } else {
-                    // TODO: 17/9/14  可以通过反射来获取 GradientState ?
-                }
-            } else if (background instanceof StateListDrawable) {
-                StateListDrawable stateListDrawable = (StateListDrawable) background;
-
-                stateListDrawable.setState(new int[]{});
-                Drawable normalStateDr = stateListDrawable.getCurrent();
-                pressedDr = DrawableUtils.addColorMask(normalStateDr, color);
-
-                StateListDrawable newDrawable = new StateListDrawable();
-                stateListDrawable.setState(new int[]{android.R.attr.state_selected});
-                newDrawable.addState(new int[]{android.R.attr.state_selected}, stateListDrawable.getCurrent());
-                newDrawable.addState(new int[]{android.R.attr.state_pressed}, pressedDr);
-                stateListDrawable.setState(new int[]{android.R.attr.state_enabled});
-                newDrawable.addState(new int[]{android.R.attr.state_enabled}, stateListDrawable.getCurrent());
-                newDrawable.addState(new int[]{}, normalStateDr);
-                setBackground(view, newDrawable);
-                return;
-            }
-        }
-        if (pressedDr != null) {
-            StateListDrawable selector = DrawableSelectors.build()
-                    .setPressedDrawable(pressedDr)
-                    .setOtherStateDrawable(background)
-                    .getSelector();
-            setBackground(view, selector);
-        }
+        addStateColorCover(view, new int[]{android.R.attr.state_pressed}, color);
     }
 
     /**
-     * 给 Drawable 添触按状态下的颜色蒙层 (在原本状态的颜色基础上盖印新的颜色)
+     * 给 View 添加选择效果, 触按效果为混合一个透明度为 30% 的黑色背景
      *
-     * @param background 需要添加触按状态的 Drawable
-     * @param color      覆盖触按状态的颜色
-     * @return 传入的 Drawable 对象
+     * @param view 指定添加效果的 View
      */
-    private static Drawable addPressedState(Drawable background, int color) {
-        Drawable pressedBg = null;
+    public static void addSelectedEffect(View view) {
+        addSelectedEffect(view, 0x33333333);
+    }
+
+    /**
+     * 给 View 添加一个颜色或者颜色蒙层作为选择效果<br/>
+     * 该方法将自动在原本背景的基础上给 View 添加一个触按状态下的颜色混合 (新状态颜色 = 原本颜色 + color)
+     *
+     * @param view  指定添加效果的 View
+     * @param color 覆盖触按状态的颜色
+     */
+    public static void addSelectedEffect(View view, int color) {
+        addStateColorCover(view, new int[]{android.R.attr.state_selected}, color);
+    }
+
+    /**
+     * 给控件添加指定状态的颜色覆盖
+     * <p>
+     * 指定的颜色会在默认的颜色上进行覆盖得出该状态的颜色
+     * <p>
+     * 注: 覆盖的颜色建议使用具有透明度的颜色, 才能达到覆盖效果
+     */
+    public static void addStateColorCover(View view, int[] stateSet, int color) {
+        // 透明度为 FF 的遮罩, 不需要颜色混淆
         if (Color.alpha(color) == 0xFF) {
-            if (background instanceof StateListDrawable) {
-                ((StateListDrawable) background).addState(new int[]{android.R.attr.state_pressed}, new ColorDrawable(color));
-                return background;
-            } else {
-                pressedBg = new ColorDrawable(color);
-            }
-        } else {
-            if (background == null) {
-                pressedBg = new ColorDrawable(color);
-            } else if (background instanceof ColorDrawable) {
-                int fgColor = ((ColorDrawable) background).getColor();
-                int pressedColor = ColorUtils.coverColor(fgColor, color);
-                pressedBg = new ColorDrawable(pressedColor);
-            } else if (background instanceof BitmapDrawable) {
-                Bitmap fgBitmap = ((BitmapDrawable) background).getBitmap();
-                Bitmap pressedBitmap = BitmapUtils.addColorMask(fgBitmap, color, false);
-                pressedBg = BitmapUtils.toDrawable(pressedBitmap);
-//            } else if (background instanceof GradientDrawable) {
-            } else if (background instanceof StateListDrawable) {
-                StateListDrawable stateListDrawable = (StateListDrawable) background;
-                stateListDrawable.addState(new int[]{android.R.attr.state_pressed}, new ColorDrawable(color));
-                int[] oldState = stateListDrawable.getState();
-                stateListDrawable.setState(new int[]{});
-                Drawable current = stateListDrawable.getCurrent();
-                addPressedState(current, color);
-                return background;
-            }
+            StateListDrawable stateListDrawable = new StateListDrawable();
+            stateListDrawable.addState(stateSet, new ColorDrawable(color));
+            stateListDrawable.addState(new int[]{}, view.getBackground());
+            view.setBackground(stateListDrawable);
+            return;
         }
-        if (pressedBg != null) {
-            return DrawableSelectors.build()
-                    .setPressedDrawable(pressedBg)
-                    .setOtherStateDrawable(background)
-                    .getSelector();
+        Drawable stateDr = null;
+        Drawable background = view.getBackground();
+        if (background == null) {
+            stateDr = new ColorDrawable(color);
+        } else if (background instanceof ColorDrawable) {
+            int fgColor = ((ColorDrawable) background).getColor();
+            int stateColor = ColorUtils.coverColor(fgColor, color);
+            stateDr = new ColorDrawable(stateColor);
+        } else if (background instanceof BitmapDrawable) {
+            Bitmap fgBitmap = ((BitmapDrawable) background).getBitmap();
+            Bitmap stateBitmap = BitmapUtils.addColorMask(fgBitmap, color, false);
+            stateDr = BitmapUtils.toDrawable(stateBitmap);
+        } else if (background instanceof GradientDrawable) {
+            GradientDrawable gradientDr = (GradientDrawable) background;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                ColorStateList stateList = gradientDr.getColor();
+                if (stateList != null) {
+                    int normalColor = stateList.getColorForState(new int[]{}, Color.TRANSPARENT);
+                    int stateColor = ColorUtils.coverColor(normalColor, color);
+                    stateDr = new ColorDrawable(stateColor);
+                } else {
+                    stateDr = new ColorDrawable(color);
+                }
+            }
+        } else if (background instanceof StateListDrawable) {
+            StateListDrawable stateListDrawable = (StateListDrawable) background;
+            int[] temp = stateListDrawable.getState();
+            stateListDrawable.setState(new int[]{});
+            Drawable normalStateDr = stateListDrawable.getCurrent();
+            stateListDrawable.setState(temp);
+            stateDr = DrawableUtils.addColorMask(normalStateDr, color);
         }
-        return background;
+        if (stateDr == null) {
+            Bitmap bitmap = DrawableUtils.toBitmap(background);
+            Bitmap stateBitmap = BitmapUtils.addColorMask(bitmap, color, false);
+            stateDr = BitmapUtils.toDrawable(stateBitmap);
+        }
+        StateListDrawable stateListDrawable = new StateListDrawable();
+        stateListDrawable.addState(stateSet, stateDr);
+        stateListDrawable.addState(new int[]{}, view.getBackground());
+        view.setBackground(stateListDrawable);
     }
 }
