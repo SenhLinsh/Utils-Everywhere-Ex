@@ -1,6 +1,10 @@
 package com.linsh.lshutils.utils;
 
 
+import androidx.annotation.WorkerThread;
+
+import com.linsh.utilseverywhere.StreamUtils;
+
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.ConnectException;
@@ -13,8 +17,6 @@ import java.util.HashMap;
 import java.util.Set;
 
 import javax.net.ssl.X509TrustManager;
-
-import androidx.annotation.WorkerThread;
 
 /**
  * <pre>
@@ -57,7 +59,7 @@ public class HttpConnectionUtilsEx {
             // 获取响应码
             if (conn.getResponseCode() == 200) {
                 // 读取流
-                return StreamUtilsEx.getText(conn.getInputStream());
+                return StreamUtils.readAsString(conn.getInputStream());
             } else {
                 throw new ConnectException(conn.getResponseMessage() + ". Response code is " + conn.getResponseCode());
             }
@@ -120,7 +122,7 @@ public class HttpConnectionUtilsEx {
             // 获取响应码
             if (conn.getResponseCode() == 200) {
                 // 读取流
-                return StreamUtilsEx.getText(conn.getInputStream());
+                return StreamUtils.readAsString(conn.getInputStream());
             } else {
                 throw new ConnectException(conn.getResponseMessage() + ". Response code is " + conn.getResponseCode());
             }
