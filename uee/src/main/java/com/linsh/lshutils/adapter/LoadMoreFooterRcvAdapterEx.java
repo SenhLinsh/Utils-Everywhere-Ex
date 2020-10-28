@@ -16,7 +16,7 @@ import java.util.List;
  *    desc   : 自动实现加载更多尾部的 RecyclerView Adapter 基类
  * </pre>
  */
-public abstract class LoadMoreFooterRcvAdapterEx<T, H extends SimpleViewHolderEx<T>> extends SimpleRcvAdapterEx<T, SimpleViewHolderEx<T>> {
+public abstract class LoadMoreFooterRcvAdapterEx<T, H extends SimpleViewHolderEx<T>> extends SimpleRcvAdapterEx2<T, SimpleViewHolderEx<T>> {
 
     private LoadMoreStatus mStatus = LoadMoreStatus.Loaded;
     private final int itemTypeFooter = 101;
@@ -59,7 +59,7 @@ public abstract class LoadMoreFooterRcvAdapterEx<T, H extends SimpleViewHolderEx
     }
 
     @Override
-    protected SimpleViewHolderEx<T> getViewHolder(ViewGroup parent, int viewType) {
+    protected SimpleViewHolderEx<T> initViewHolder(ViewGroup parent, int viewType) {
         if (viewType == itemTypeFooter) {
             return getFooterHolder(parent);
         } else {

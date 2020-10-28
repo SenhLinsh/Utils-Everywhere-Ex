@@ -4,7 +4,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.linsh.lshutils.R;
@@ -17,10 +16,10 @@ import java.util.List;
  *    author : Senh Linsh
  *    github : https://github.com/SenhLinsh
  *    date   : 2018/06/28
- *    desc   : 简单 RecyclerView.Adapter 的集成
+ *    desc   : 简单 RecyclerView.Adapter 的集成, 配合 {@link SimpleViewHolderEx} 使用
  * </pre>
  */
-public abstract class SimpleRcvAdapterEx<T, H extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<H>
+public abstract class SimpleRcvAdapterEx2<T, H extends SimpleViewHolderEx<T>> extends RecyclerView.Adapter<H>
         implements View.OnClickListener, View.OnLongClickListener {
 
     private RecyclerView mRecyclerView;
@@ -41,9 +40,8 @@ public abstract class SimpleRcvAdapterEx<T, H extends RecyclerView.ViewHolder> e
         return data == null ? 0 : data.size();
     }
 
-    @NonNull
     @Override
-    public H onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public H onCreateViewHolder(ViewGroup parent, int viewType) {
         H viewHolder = initViewHolder(parent, viewType);
         viewHolder.itemView.setOnClickListener(this);
         viewHolder.itemView.setOnLongClickListener(this);
@@ -62,18 +60,14 @@ public abstract class SimpleRcvAdapterEx<T, H extends RecyclerView.ViewHolder> e
         onBindViewHolder(holder, data, position);
     }
 
-    protected abstract void onBindViewHolder(H holder, T t, int position);
-
-    @Override
-    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
-        super.onAttachedToRecyclerView(recyclerView);
-        mRecyclerView = recyclerView;
+    protected void onBindViewHolder(H holder, T t, int position) {
+        holder.setData(t, position);
     }
 
     @Override
-    public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
-        super.onDetachedFromRecyclerView(recyclerView);
-        mRecyclerView = null;
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        mRecyclerView = recyclerView;
     }
 
     protected RecyclerView getRecyclerView() {
@@ -88,10 +82,6 @@ public abstract class SimpleRcvAdapterEx<T, H extends RecyclerView.ViewHolder> e
         return mRecyclerView.findViewWithTag(tag);
     }
 
-    protected View inflateView(ViewGroup parent, int layout) {
-        return LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
-    }
-
     @Override
     public void onClick(View v) {
         ViewGroup.LayoutParams params = v.getLayoutParams();
@@ -100,6 +90,7 @@ public abstract class SimpleRcvAdapterEx<T, H extends RecyclerView.ViewHolder> e
             if (tag instanceof SimpleViewHolderEx) {
                 H viewHolder = (H) tag;
                 onClick(viewHolder);
+                viewHolder.onItemClick();
             }
         }
     }
@@ -117,7 +108,7 @@ public abstract class SimpleRcvAdapterEx<T, H extends RecyclerView.ViewHolder> e
             Object tag = v.getTag(R.id.uee_tag_view_holder);
             if (tag instanceof SimpleViewHolderEx) {
                 H viewHolder = (H) tag;
-                return onLongClick(viewHolder);
+                return onLongClick(viewHolder) || viewHolder.onItemLongClick();
             }
         }
         return false;
@@ -148,5 +139,9 @@ public abstract class SimpleRcvAdapterEx<T, H extends RecyclerView.ViewHolder> e
 
     public interface OnItemLongClickListener<H> {
         boolean onItemLongClick(H holder, int position);
+    }
+
+    public static View inflateItem(ViewGroup parent, int layout) {
+        return LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
     }
 }
