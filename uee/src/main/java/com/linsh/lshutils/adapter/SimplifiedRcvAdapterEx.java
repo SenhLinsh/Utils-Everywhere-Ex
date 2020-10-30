@@ -52,6 +52,14 @@ public abstract class SimplifiedRcvAdapterEx<T> extends RecyclerView.Adapter<Sim
                 }
             });
         }
+        if (mOnItemLongClickListener != null) {
+            viewHolder.setOnItemLongClickListener(new OnItemLongClickListener<Void>() {
+                @Override
+                public boolean onItemLongClick(SimplifiedViewHolderEx viewHolder, Void data, int position) {
+                    return mOnItemLongClickListener.onItemLongClick(viewHolder, list.get(position), position);
+                }
+            });
+        }
         return viewHolder;
     }
 
@@ -86,9 +94,20 @@ public abstract class SimplifiedRcvAdapterEx<T> extends RecyclerView.Adapter<Sim
         void onItemClick(SimplifiedViewHolderEx viewHolder, T data, int position);
     }
 
-    public static class SimplifiedViewHolderEx extends RecyclerView.ViewHolder implements View.OnClickListener {
+    private OnItemLongClickListener<T> mOnItemLongClickListener;
+
+    public void setOnItemLongClickListener(OnItemLongClickListener<T> listener) {
+        mOnItemLongClickListener = listener;
+    }
+
+    public interface OnItemLongClickListener<T> {
+        boolean onItemLongClick(SimplifiedViewHolderEx viewHolder, T data, int position);
+    }
+
+    public static class SimplifiedViewHolderEx extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
         private OnItemClickListener<Void> mOnItemClickListener;
+        private OnItemLongClickListener<Void> mOnItemLongClickListener;
         private SparseArray<View> mViews;
         private int curItemPosition = -1;
 
@@ -96,6 +115,7 @@ public abstract class SimplifiedRcvAdapterEx<T> extends RecyclerView.Adapter<Sim
             super(itemView);
             mViews = new SparseArray<>();
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
         }
 
         public <T extends View> T getView(int viewId) {
@@ -249,6 +269,18 @@ public abstract class SimplifiedRcvAdapterEx<T> extends RecyclerView.Adapter<Sim
             if (mOnItemClickListener != null) {
                 mOnItemClickListener.onItemClick(this, null, getAdapterPosition());
             }
+        }
+
+        public void setOnItemLongClickListener(OnItemLongClickListener<Void> listener) {
+            mOnItemLongClickListener = listener;
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            if (mOnItemLongClickListener != null) {
+                return mOnItemLongClickListener.onItemLongClick(this, null, getAdapterPosition());
+            }
+            return false;
         }
     }
 }

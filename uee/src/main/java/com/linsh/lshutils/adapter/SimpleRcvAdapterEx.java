@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.linsh.lshutils.R;
-import com.linsh.lshutils.viewholder.SimpleViewHolderEx;
 
 import java.util.List;
 
@@ -97,10 +96,8 @@ public abstract class SimpleRcvAdapterEx<T, H extends RecyclerView.ViewHolder> e
         ViewGroup.LayoutParams params = v.getLayoutParams();
         if (params instanceof RecyclerView.LayoutParams) {
             Object tag = v.getTag(R.id.uee_tag_view_holder);
-            if (tag instanceof SimpleViewHolderEx) {
-                H viewHolder = (H) tag;
-                onClick(viewHolder);
-            }
+            H viewHolder = (H) tag;
+            onClick(viewHolder);
         }
     }
 
@@ -115,10 +112,8 @@ public abstract class SimpleRcvAdapterEx<T, H extends RecyclerView.ViewHolder> e
         ViewGroup.LayoutParams params = v.getLayoutParams();
         if (params instanceof RecyclerView.LayoutParams) {
             Object tag = v.getTag(R.id.uee_tag_view_holder);
-            if (tag instanceof SimpleViewHolderEx) {
-                H viewHolder = (H) tag;
-                return onLongClick(viewHolder);
-            }
+            H viewHolder = (H) tag;
+            return onLongClick(viewHolder);
         }
         return false;
     }
