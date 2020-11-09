@@ -26,7 +26,6 @@ public class FileEncryptUtilsEx {
     private static final String DEFAULT_CHARSET = "UTF-8";
     private static final String AES = "AES";
 
-
     public static boolean saveEncryptedFile(byte[] rawKey, String content, File file) {
         if (rawKey == null || content == null) {
             return false;

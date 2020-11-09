@@ -40,4 +40,11 @@ public class IdUtilsEx {
         }
         return generateId();
     }
+
+    /**
+     * 生成 View id
+     */
+    public static int generateRequestCode() {
+        return generateId() & 0x0000ffff;
+    }
 }
