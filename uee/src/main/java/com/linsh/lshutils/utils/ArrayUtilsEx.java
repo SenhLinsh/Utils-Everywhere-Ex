@@ -29,6 +29,77 @@ public class ArrayUtilsEx {
         return -1;
     }
 
+    public static int indexOf(boolean[] array, boolean item) {
+        if (array != null) {
+            for (int i = 0; i < array.length; i++) {
+                if (array[i] == item)
+                    return i;
+            }
+        }
+        return -1;
+    }
+
+    public static int indexOf(byte[] array, byte item) {
+        if (array != null) {
+            for (int i = 0; i < array.length; i++) {
+                if (array[i] == item)
+                    return i;
+            }
+        }
+        return -1;
+    }
+
+    public static int indexOf(char[] array, char item) {
+        if (array != null) {
+            for (int i = 0; i < array.length; i++) {
+                if (array[i] == item)
+                    return i;
+            }
+        }
+        return -1;
+    }
+
+    public static int indexOf(int[] array, int item) {
+        if (array != null) {
+            for (int i = 0; i < array.length; i++) {
+                if (array[i] == item)
+                    return i;
+            }
+        }
+        return -1;
+    }
+
+    public static int indexOf(long[] array, long item) {
+        if (array != null) {
+            for (int i = 0; i < array.length; i++) {
+                if (array[i] == item)
+                    return i;
+            }
+        }
+        return -1;
+    }
+
+    public static int indexOf(float[] array, float item) {
+        if (array != null) {
+            for (int i = 0; i < array.length; i++) {
+                if (array[i] == item)
+                    return i;
+            }
+        }
+        return -1;
+    }
+
+    public static int indexOf(double[] array, double item) {
+        if (array != null) {
+            for (int i = 0; i < array.length; i++) {
+                if (array[i] == item)
+                    return i;
+            }
+        }
+        return -1;
+    }
+
+
     public static <T> boolean contains(T[] array, T item) {
         if (array != null) {
             for (T t : array) {
