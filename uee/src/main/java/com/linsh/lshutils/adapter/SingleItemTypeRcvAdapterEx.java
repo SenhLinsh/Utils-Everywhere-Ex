@@ -4,11 +4,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.linsh.lshutils.R;
 
 import java.util.List;
-
-import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * <pre>
@@ -33,7 +33,7 @@ public abstract class SingleItemTypeRcvAdapterEx<T, H extends RecyclerView.ViewH
 
     protected abstract int getLayout();
 
-    protected abstract H createViewHolder(View view, int viewType);
+    protected abstract H createViewHolder(View itemView, int viewType);
 
     @Override
     public void onBindViewHolder(H holder, int position) {
@@ -41,7 +41,7 @@ public abstract class SingleItemTypeRcvAdapterEx<T, H extends RecyclerView.ViewH
         onBindViewHolder(holder, data.get(position), position);
     }
 
-    protected abstract void onBindViewHolder(H holder, T data, int position);
+    protected abstract void onBindViewHolder(H holder, T t, int position);
 
     @Override
     public int getItemCount() {
@@ -60,7 +60,7 @@ public abstract class SingleItemTypeRcvAdapterEx<T, H extends RecyclerView.ViewH
     @Override
     public void onClick(View v) {
         Object tag = v.getTag(R.id.uee_tag_item_view);
-        if (mOnItemClickListener != null && tag != null && tag instanceof Integer) {
+        if (mOnItemClickListener != null && tag instanceof Integer) {
             mOnItemClickListener.onItemClick((Integer) tag);
         }
     }
@@ -78,7 +78,7 @@ public abstract class SingleItemTypeRcvAdapterEx<T, H extends RecyclerView.ViewH
     @Override
     public boolean onLongClick(View v) {
         Object tag = v.getTag(R.id.uee_tag_item_view);
-        if (mOnItemLongClickListener != null && tag != null && tag instanceof Integer) {
+        if (mOnItemLongClickListener != null && tag instanceof Integer) {
             mOnItemLongClickListener.onItemLongClick(v, (Integer) tag);
             return true;
         }
