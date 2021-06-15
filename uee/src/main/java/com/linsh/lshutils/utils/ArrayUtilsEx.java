@@ -1,5 +1,7 @@
 package com.linsh.lshutils.utils;
 
+import androidx.annotation.Nullable;
+
 import com.linsh.utilseverywhere.ObjectUtils;
 
 /**
@@ -19,7 +21,7 @@ public class ArrayUtilsEx {
      * @param item  数组中的元素
      * @return 索引, 如果不存在则返回 -1
      */
-    public static <T> int indexOf(T[] array, T item) {
+    public static <T> int indexOf(@Nullable T[] array, @Nullable T item) {
         if (array != null) {
             for (int i = 0; i < array.length; i++) {
                 if (array[i] == item)
@@ -29,7 +31,7 @@ public class ArrayUtilsEx {
         return -1;
     }
 
-    public static int indexOf(boolean[] array, boolean item) {
+    public static int indexOf(@Nullable boolean[] array, boolean item) {
         if (array != null) {
             for (int i = 0; i < array.length; i++) {
                 if (array[i] == item)
@@ -39,7 +41,7 @@ public class ArrayUtilsEx {
         return -1;
     }
 
-    public static int indexOf(byte[] array, byte item) {
+    public static int indexOf(@Nullable byte[] array, byte item) {
         if (array != null) {
             for (int i = 0; i < array.length; i++) {
                 if (array[i] == item)
@@ -49,7 +51,7 @@ public class ArrayUtilsEx {
         return -1;
     }
 
-    public static int indexOf(char[] array, char item) {
+    public static int indexOf(@Nullable char[] array, char item) {
         if (array != null) {
             for (int i = 0; i < array.length; i++) {
                 if (array[i] == item)
@@ -59,7 +61,7 @@ public class ArrayUtilsEx {
         return -1;
     }
 
-    public static int indexOf(int[] array, int item) {
+    public static int indexOf(@Nullable int[] array, int item) {
         if (array != null) {
             for (int i = 0; i < array.length; i++) {
                 if (array[i] == item)
@@ -69,7 +71,7 @@ public class ArrayUtilsEx {
         return -1;
     }
 
-    public static int indexOf(long[] array, long item) {
+    public static int indexOf(@Nullable long[] array, long item) {
         if (array != null) {
             for (int i = 0; i < array.length; i++) {
                 if (array[i] == item)
@@ -79,7 +81,7 @@ public class ArrayUtilsEx {
         return -1;
     }
 
-    public static int indexOf(float[] array, float item) {
+    public static int indexOf(@Nullable float[] array, float item) {
         if (array != null) {
             for (int i = 0; i < array.length; i++) {
                 if (array[i] == item)
@@ -89,7 +91,7 @@ public class ArrayUtilsEx {
         return -1;
     }
 
-    public static int indexOf(double[] array, double item) {
+    public static int indexOf(@Nullable double[] array, double item) {
         if (array != null) {
             for (int i = 0; i < array.length; i++) {
                 if (array[i] == item)
@@ -99,8 +101,7 @@ public class ArrayUtilsEx {
         return -1;
     }
 
-
-    public static <T> boolean contains(T[] array, T item) {
+    public static <T> boolean contains(@Nullable T[] array, @Nullable T item) {
         if (array != null) {
             for (T t : array) {
                 if (ObjectUtils.isEqual(t, item))
@@ -108,5 +109,9 @@ public class ArrayUtilsEx {
             }
         }
         return false;
+    }
+
+    public static <T> int length(@Nullable T[] array) {
+        return array == null ? 0 : array.length;
     }
 }
