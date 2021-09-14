@@ -26,6 +26,58 @@ public class ViewUtilsEx {
     }
 
     /**
+     * 设置 leftMargin
+     *
+     * @param view       View 对象
+     * @param leftMargin leftMargin
+     */
+    public static void setLeftMargin(@NonNull View view, int leftMargin) {
+        ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+        if (layoutParams instanceof ViewGroup.MarginLayoutParams) {
+            ((ViewGroup.MarginLayoutParams) layoutParams).leftMargin = leftMargin;
+        }
+    }
+
+    /**
+     * 设置 topMargin
+     *
+     * @param view      View 对象
+     * @param topMargin topMargin
+     */
+    public static void setTopMargin(@NonNull View view, int topMargin) {
+        ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+        if (layoutParams instanceof ViewGroup.MarginLayoutParams) {
+            ((ViewGroup.MarginLayoutParams) layoutParams).topMargin = topMargin;
+        }
+    }
+
+    /**
+     * 设置 rightMargin
+     *
+     * @param view        View 对象
+     * @param rightMargin rightMargin
+     */
+    public static void setRightMargin(@NonNull View view, int rightMargin) {
+        ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+        if (layoutParams instanceof ViewGroup.MarginLayoutParams) {
+            ((ViewGroup.MarginLayoutParams) layoutParams).rightMargin = rightMargin;
+        }
+    }
+
+    /**
+     * 设置 bottomMargin
+     *
+     * @param view         View 对象
+     * @param bottomMargin bottomMargin
+     */
+    public static void setBottomMargin(@NonNull View view, int bottomMargin) {
+        ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+        if (layoutParams instanceof ViewGroup.MarginLayoutParams) {
+            ((ViewGroup.MarginLayoutParams) layoutParams).bottomMargin = bottomMargin;
+        }
+    }
+
+    /**
      * 查找所有指定名称的 View
      *
      * @param view        根布局
