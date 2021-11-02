@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,38 +79,99 @@ public class ViewUtilsEx {
     }
 
     /**
-     * 查找所有指定名称的 View
+     * 查找所有实例为指定类型的 View，当前类型或为其子类
      *
      * @param view        根布局
      * @param classOfView 指定 View 的类对象
      * @return 所有名称匹配的子 View
      */
-    public static List<View> findViewsByName(@NonNull View view, @NonNull Class<? extends View> classOfView) {
-        return findViewsByName(view, classOfView.getName());
+    @NonNull
+    public static <T extends View> List<T> findViewsByClass(@NonNull View view, @NonNull Class<T> classOfView) {
+        return findViewsByClassInternal(view, classOfView, new ArrayList<T>());
+    }
+
+    private static <T extends View> List<T> findViewsByClassInternal(@NonNull View view, @NonNull Class<T> classOfView, List<T> result) {
+        if (classOfView.isAssignableFrom(view.getClass())) {
+            result.add((T) view);
+        }
+        if (view instanceof ViewGroup) {
+            ViewGroup viewGroup = (ViewGroup) view;
+            for (int i = 0; i < viewGroup.getChildCount(); i++) {
+                findViewsByClassInternal(viewGroup.getChildAt(i), classOfView, result);
+            }
+        }
+        return result;
     }
 
     /**
-     * 查找所有指定名称的 View
+     * 查找所有类名为指定名称的 View，仅为当前类型（不包括其子类或实现类）
      *
      * @param view      根布局
      * @param className 指定 View 的名称
      * @return 所有名称匹配的子 View
      */
-    public static List<View> findViewsByName(@NonNull View view, @NonNull String className) {
-        return findViewsByName(view, className, new ArrayList<View>());
+    @NonNull
+    public static List<View> findViewsByClass(@NonNull View view, @NonNull String className) {
+        return findViewsByClassInternal(view, className, new ArrayList<View>());
     }
 
-    private static List<View> findViewsByName(@NonNull View view, @NonNull String className, List<View> result) {
+    private static <T extends View> List<T> findViewsByClassInternal(@NonNull View view, @NonNull String className, List<T> result) {
         if (view.getClass().getName().endsWith(className)) {
-            result.add(view);
+            result.add((T) view);
         }
         if (view instanceof ViewGroup) {
             ViewGroup viewGroup = (ViewGroup) view;
             for (int i = 0; i < viewGroup.getChildCount(); i++) {
-                findViewsByName(viewGroup.getChildAt(i), className, result);
+                findViewsByClassInternal(viewGroup.getChildAt(i), className, result);
             }
         }
         return result;
+    }
+
+    /**
+     * 查找首个实例为指定类型的 View，当前类型或为其子类
+     *
+     * @param view        根布局
+     * @param classOfView 指定 View 的类对象
+     * @return 首个名称匹配的子 View
+     */
+    @Nullable
+    public static <T extends View> T findFirstViewByClass(@NonNull View view, @NonNull Class<T> classOfView) {
+        if (classOfView.isAssignableFrom(view.getClass())) {
+            return (T) view;
+        }
+        if (view instanceof ViewGroup) {
+            ViewGroup viewGroup = (ViewGroup) view;
+            for (int i = 0; i < viewGroup.getChildCount(); i++) {
+                T ret = findFirstViewByClass(viewGroup.getChildAt(i), classOfView);
+                if (ret != null)
+                    return ret;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 查找首个类名为指定名称的 View，仅为当前类型（不包括其子类或实现类）
+     *
+     * @param view      根布局
+     * @param className 指定 View 的名称
+     * @return 首个名称匹配的子 View
+     */
+    @Nullable
+    public static <T extends View> T findFirstViewByClass(@NonNull View view, @NonNull String className) {
+        if (view.getClass().getName().equals(className)) {
+            return (T) view;
+        }
+        if (view instanceof ViewGroup) {
+            ViewGroup viewGroup = (ViewGroup) view;
+            for (int i = 0; i < viewGroup.getChildCount(); i++) {
+                T ret = findFirstViewByClass(viewGroup.getChildAt(i), className);
+                if (ret != null)
+                    return ret;
+            }
+        }
+        return null;
     }
 
     /**
