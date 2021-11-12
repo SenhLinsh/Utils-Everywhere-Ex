@@ -3,6 +3,7 @@ package com.linsh.lshutils.utils;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.provider.Settings;
 import android.util.Log;
 
@@ -137,5 +138,13 @@ public class IntentUtilsEx {
         }
         Log.i(IntentUtils.class.getSimpleName(), "MiuiVersion = " + line);
         return line;
+    }
+
+
+    public static void gotoBrowser(String url) {
+        Intent intent = new Intent(Intent.ACTION_VIEW)
+                .setData(Uri.parse(url))
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        ContextUtils.get().startActivity(intent);
     }
 }
