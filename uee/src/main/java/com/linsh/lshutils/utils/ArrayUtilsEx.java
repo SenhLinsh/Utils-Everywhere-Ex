@@ -15,6 +15,25 @@ import com.linsh.utilseverywhere.ObjectUtils;
 public class ArrayUtilsEx {
 
     /**
+     * 将字符串解析成数组
+     *
+     * @param s 字符串
+     */
+    @Nullable
+    public static String[] fromString(@Nullable String s) {
+        if (s == null)
+            return null;
+        if (!s.startsWith("[") || !s.endsWith("]"))
+            return null;
+        String content = s.substring(1, s.length() - 1);
+        String[] args = content.split(",");
+        for (int i = 0; i < args.length; i++) {
+            args[i] = args[i].trim();
+        }
+        return args;
+    }
+
+    /**
      * 查找元素在数组中的索引
      *
      * @param array 数组
