@@ -5,6 +5,9 @@ import android.os.SystemClock;
 import android.view.MotionEvent;
 import android.view.View;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.linsh.utilseverywhere.HandlerUtils;
 import com.linsh.utilseverywhere.RandomUtils;
 
@@ -78,5 +81,33 @@ public class ActivityUtilsEx {
      */
     public static View getContentView(final Activity activity) {
         return activity.findViewById(android.R.id.content);
+    }
+
+    /**
+     * 设置 Action Bar 是否可见
+     *
+     * @param activity Activity
+     * @param visible  是否可见
+     */
+    public static void setActionBarVisible(Activity activity, boolean visible) {
+        if (activity instanceof AppCompatActivity) {
+            ActionBar actionBar = ((AppCompatActivity) activity).getSupportActionBar();
+            if (actionBar != null) {
+                if (visible) {
+                    actionBar.show();
+                } else {
+                    actionBar.hide();
+                }
+            }
+        } else {
+            android.app.ActionBar actionBar = activity.getActionBar();
+            if (actionBar != null) {
+                if (visible) {
+                    actionBar.show();
+                } else {
+                    actionBar.hide();
+                }
+            }
+        }
     }
 }
