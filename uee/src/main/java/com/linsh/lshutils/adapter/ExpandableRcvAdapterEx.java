@@ -3,9 +3,9 @@ package com.linsh.lshutils.adapter;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.List;
-
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
 
 /**
  * <pre>
@@ -187,13 +187,15 @@ public abstract class ExpandableRcvAdapterEx<F, S> extends RecyclerView.Adapter 
         boolean consumed = false;
         RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) v.getLayoutParams();
         int position = layoutParams.getViewAdapterPosition();
-        if (getFirstPosition(position) >= 0) {
+        int firstPosition = getFirstPosition(position);
+        if (firstPosition >= 0) {
             if (mOnItemLongClickListener != null) {
-                consumed = mOnItemLongClickListener.onFirstLevelItemLongClick(v, getFirstPosition(position), position);
+                consumed = mOnItemLongClickListener.onFirstLevelItemLongClick(v, firstLevelData.get(firstPosition));
             }
         } else {
             if (mOnItemLongClickListener != null) {
-                consumed = mOnItemLongClickListener.onSecondLevelItemLongClick(v, getSecondPosition(position), position);
+                int secondPosition = getSecondPosition(position);
+                consumed = mOnItemLongClickListener.onSecondLevelItemLongClick(v, firstLevelData.get(mLastFirstLevelClickPosition), secondLevelData.get(secondPosition));
             }
         }
         return consumed;
@@ -205,7 +207,7 @@ public abstract class ExpandableRcvAdapterEx<F, S> extends RecyclerView.Adapter 
 
     protected abstract void onBindExpandableViewHolder(RecyclerView.ViewHolder holder, int position);
 
-    private OnItemClickListener mOnItemClickListener;
+    private OnItemClickListener<F, S> mOnItemClickListener;
 
     public void setOnItemClickListener(OnItemClickListener<F, S> listener) {
         mOnItemClickListener = listener;
@@ -217,15 +219,15 @@ public abstract class ExpandableRcvAdapterEx<F, S> extends RecyclerView.Adapter 
         void onSecondLevelItemClick(S secondLevelData, int firstLevelPosition, int secondLevelPosition);
     }
 
-    private OnItemLongClickListener mOnItemLongClickListener;
+    private OnItemLongClickListener<F, S> mOnItemLongClickListener;
 
-    public void setOnItemLongClickListener(OnItemLongClickListener listener) {
+    public void setOnItemLongClickListener(OnItemLongClickListener<F, S> listener) {
         mOnItemLongClickListener = listener;
     }
 
-    public interface OnItemLongClickListener {
-        boolean onFirstLevelItemLongClick(View view, int firstLevelPosition, int position);
+    public interface OnItemLongClickListener<F, S> {
+        boolean onFirstLevelItemLongClick(View view, F firstLevelData);
 
-        boolean onSecondLevelItemLongClick(View view, int secondLevelPosition, int position);
+        boolean onSecondLevelItemLongClick(View view, F firstLevelData, S secondLevelData);
     }
 }
