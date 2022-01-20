@@ -84,29 +84,39 @@ public class ActivityUtilsEx {
     }
 
     /**
-     * 设置 Action Bar 是否可见
+     * 显示 Action Bar
      *
      * @param activity Activity
-     * @param visible  是否可见
      */
-    public static void setActionBarVisible(Activity activity, boolean visible) {
+    public static void showActionBar(Activity activity) {
         if (activity instanceof AppCompatActivity) {
             ActionBar actionBar = ((AppCompatActivity) activity).getSupportActionBar();
             if (actionBar != null) {
-                if (visible) {
-                    actionBar.show();
-                } else {
-                    actionBar.hide();
-                }
+                actionBar.show();
             }
         } else {
             android.app.ActionBar actionBar = activity.getActionBar();
             if (actionBar != null) {
-                if (visible) {
-                    actionBar.show();
-                } else {
-                    actionBar.hide();
-                }
+                actionBar.show();
+            }
+        }
+    }
+
+    /**
+     * 隐藏 Action Bar
+     *
+     * @param activity Activity
+     */
+    public static void hideActionBar(Activity activity) {
+        if (activity instanceof AppCompatActivity) {
+            ActionBar actionBar = ((AppCompatActivity) activity).getSupportActionBar();
+            if (actionBar != null) {
+                actionBar.hide();
+            }
+        } else {
+            android.app.ActionBar actionBar = activity.getActionBar();
+            if (actionBar != null) {
+                actionBar.hide();
             }
         }
     }
