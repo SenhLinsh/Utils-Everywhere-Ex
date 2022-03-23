@@ -3,12 +3,12 @@ package com.linsh.lshutils.adapter;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.linsh.lshutils.R;
 import com.linsh.lshutils.viewholder.ViewHolderEx;
 
 import java.util.List;
-
-import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by Senh Linsh on 17/1/4.
@@ -16,13 +16,13 @@ import androidx.recyclerview.widget.RecyclerView;
 public abstract class BaseRcvAdapterEx<T, H extends ViewHolderEx> extends BaseRcvAdapter<H>
         implements View.OnClickListener, View.OnLongClickListener {
 
-    private List<T> data;
+    private List<? extends T> data;
 
-    public List<T> getData() {
+    public List<? extends T> getData() {
         return data;
     }
 
-    public void setData(List<T> data) {
+    public void setData(List<? extends T> data) {
         this.data = data;
         notifyDataSetChanged();
     }
