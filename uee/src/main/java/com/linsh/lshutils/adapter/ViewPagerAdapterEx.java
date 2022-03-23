@@ -3,9 +3,9 @@ package com.linsh.lshutils.adapter;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.List;
-
 import androidx.viewpager.widget.PagerAdapter;
+
+import java.util.List;
 
 /**
  * <pre>
@@ -17,7 +17,7 @@ import androidx.viewpager.widget.PagerAdapter;
  */
 public abstract class ViewPagerAdapterEx<T> extends PagerAdapter {
 
-    private List<T> data;
+    private List<? extends T> data;
 
     @Override
     public int getCount() {
@@ -43,12 +43,12 @@ public abstract class ViewPagerAdapterEx<T> extends PagerAdapter {
         container.removeView((View) object);
     }
 
-    public void setData(List<T> data) {
+    public void setData(List<? extends T> data) {
         this.data = data;
         notifyDataSetChanged();
     }
 
-    public List<T> getData() {
+    public List<? extends T> getData() {
         return data;
     }
 }
