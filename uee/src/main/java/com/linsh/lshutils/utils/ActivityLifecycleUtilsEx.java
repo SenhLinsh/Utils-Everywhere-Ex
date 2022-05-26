@@ -238,7 +238,7 @@ public class ActivityLifecycleUtilsEx {
         public static final int STATUS_STOPPED = 5;
 
         private int status;
-        private WeakReference<Activity> activityRef;
+        private final WeakReference<Activity> activityRef;
 
         public ActivityStatus(Activity activity) {
             this.activityRef = new WeakReference<>(activity);
