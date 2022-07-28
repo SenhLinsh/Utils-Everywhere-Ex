@@ -8,7 +8,7 @@ import android.provider.ContactsContract;
 
 import com.linsh.lshutils.utils.OSUtilsEx;
 import com.linsh.utilseverywhere.ContextUtils;
-import com.linsh.utilseverywhere.module.SimpleDate;
+import com.linsh.utilseverywhere.entity.SimpleDate;
 import com.linsh.utilseverywhere.tools.WhereBuilder;
 
 /**
