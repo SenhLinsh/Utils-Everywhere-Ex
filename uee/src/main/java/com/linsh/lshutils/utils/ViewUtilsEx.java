@@ -1,5 +1,7 @@
 package com.linsh.lshutils.utils;
 
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.view.MotionEvent;
 import android.view.TouchDelegate;
@@ -24,6 +26,32 @@ import java.util.List;
 public class ViewUtilsEx {
 
     private ViewUtilsEx() {
+    }
+
+    /**
+     * 根据 View 当前布局显示绘制图片
+     */
+    public static Bitmap drawBitmap(View view) {
+        int width = view.getWidth();
+        int height = view.getHeight();
+        if (width <= 0 || height <= 0) {
+            int specSize = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+            view.measure(specSize, specSize);
+            width = view.getMeasuredWidth();
+            height = view.getMeasuredHeight();
+        }
+        if (width <= 0 || height <= 0) {
+            return null;
+        }
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        if (view.getRight() <= 0 || view.getBottom() <= 0) {
+            view.layout(0, 0, width, height);
+        } else {
+            view.layout(view.getLeft(), view.getTop(), view.getRight(), view.getBottom());
+        }
+        view.draw(canvas);
+        return bitmap;
     }
 
     /**
