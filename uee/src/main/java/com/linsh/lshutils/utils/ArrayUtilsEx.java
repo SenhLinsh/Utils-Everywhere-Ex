@@ -1,5 +1,6 @@
 package com.linsh.lshutils.utils;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.linsh.utilseverywhere.ObjectUtils;
@@ -220,5 +221,33 @@ public class ArrayUtilsEx {
             if (t != null) ret[count++] = t;
         }
         return ret;
+    }
+
+    /**
+     * 复制数组
+     *
+     * @param src  源数组
+     * @param dest 目标数组
+     * @return 目标数组
+     */
+    public static <T> T[] copy(@NonNull T[] src, @NonNull T[] dest) {
+        System.arraycopy(src, 0, dest, 0, Math.min(src.length, dest.length));
+        return dest;
+    }
+
+    /**
+     * 为数组追加数据
+     *
+     * @param src   源数组
+     * @param items 追加的数据
+     * @return 追加数据后的新数组
+     */
+    public static <T> T[] append(@NonNull T[] src, T... items) {
+        T[] array = (T[]) Array.newInstance(src.getClass().getComponentType(), src.length + items.length);
+        System.arraycopy(src, 0, array, 0, src.length);
+        for (int i = src.length; i < array.length; i++) {
+            array[i] = items[i - src.length];
+        }
+        return array;
     }
 }
