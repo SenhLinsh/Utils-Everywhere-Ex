@@ -98,4 +98,18 @@ public class StringUtilsEx {
         }
         return -1;
     }
+
+    /**
+     * 按指定次数拼接字符串
+     *
+     * @param text 需要拼接的字符串
+     * @param num  拼接次数
+     */
+    public static String jointStr(String text, int num) {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < num; i++) {
+            builder.append(text);
+        }
+        return builder.toString();
+    }
 }
