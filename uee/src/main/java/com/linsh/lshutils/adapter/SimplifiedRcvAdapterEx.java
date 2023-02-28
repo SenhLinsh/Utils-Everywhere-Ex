@@ -32,8 +32,12 @@ import java.util.List;
  */
 public abstract class SimplifiedRcvAdapterEx<T> extends RecyclerView.Adapter<SimplifiedRcvAdapterEx.SimplifiedViewHolderEx> {
 
+    private final int layoutId;
     private List<T> list;
-    private int layoutId;
+
+    public SimplifiedRcvAdapterEx(int layoutId) {
+        this.layoutId = layoutId;
+    }
 
     public SimplifiedRcvAdapterEx(int layoutId, List<T> list) {
         this.layoutId = layoutId;
@@ -65,11 +69,11 @@ public abstract class SimplifiedRcvAdapterEx<T> extends RecyclerView.Adapter<Sim
 
     @Override
     public void onBindViewHolder(SimplifiedViewHolderEx holder, int position) {
-        T data = list.get(position);
-        onBindViewHolder(holder, data, position);
+        T item = list.get(position);
+        onBindViewHolder(holder, item, position);
     }
 
-    protected abstract void onBindViewHolder(SimplifiedViewHolderEx holder, T data, int position);
+    protected abstract void onBindViewHolder(SimplifiedViewHolderEx holder, T item, int position);
 
     public void setData(List<T> list) {
         this.list = list;
@@ -91,7 +95,7 @@ public abstract class SimplifiedRcvAdapterEx<T> extends RecyclerView.Adapter<Sim
     }
 
     public interface OnItemClickListener<T> {
-        void onItemClick(SimplifiedViewHolderEx viewHolder, T data, int position);
+        void onItemClick(SimplifiedViewHolderEx viewHolder, T item, int position);
     }
 
     private OnItemLongClickListener<T> mOnItemLongClickListener;
@@ -101,7 +105,7 @@ public abstract class SimplifiedRcvAdapterEx<T> extends RecyclerView.Adapter<Sim
     }
 
     public interface OnItemLongClickListener<T> {
-        boolean onItemLongClick(SimplifiedViewHolderEx viewHolder, T data, int position);
+        boolean onItemLongClick(SimplifiedViewHolderEx viewHolder, T item, int position);
     }
 
     public static class SimplifiedViewHolderEx extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
