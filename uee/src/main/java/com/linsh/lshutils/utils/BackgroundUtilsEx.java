@@ -44,7 +44,7 @@ public class BackgroundUtilsEx {
      * @param color 覆盖触按状态的颜色
      */
     public static void addPressedEffect(View view, int color) {
-        addStateColorCover(view, new int[]{android.R.attr.state_pressed}, color);
+        addStateColorCover(view, new int[][]{new int[]{android.R.attr.state_pressed}}, color);
     }
 
     /**
@@ -64,7 +64,27 @@ public class BackgroundUtilsEx {
      * @param color 覆盖触按状态的颜色
      */
     public static void addSelectedEffect(View view, int color) {
-        addStateColorCover(view, new int[]{android.R.attr.state_selected}, color);
+        addStateColorCover(view, new int[][]{new int[]{android.R.attr.state_selected}}, color);
+    }
+
+    /**
+     * 给 View 添加触按和选择效果, 触按效果为混合一个透明度为 30% 的黑色背景
+     *
+     * @param view 指定添加效果的 View
+     */
+    public static void addPressedAndSelectedEffect(View view) {
+        addStateColorCover(view, new int[][]{new int[]{android.R.attr.state_pressed}, new int[]{android.R.attr.state_selected}}, 0x33333333);
+    }
+
+    /**
+     * 给 View 添加一个颜色或者颜色蒙层作为触按和选择效果<br/>
+     * 该方法将自动在原本背景的基础上给 View 添加一个触按状态下的颜色混合 (新状态颜色 = 原本颜色 + color)
+     *
+     * @param view  指定添加效果的 View
+     * @param color 覆盖触按状态的颜色
+     */
+    public static void addPressedAndSelectedEffect(View view, int color) {
+        addStateColorCover(view, new int[][]{new int[]{android.R.attr.state_pressed}, new int[]{android.R.attr.state_selected}}, color);
     }
 
     /**
@@ -74,11 +94,13 @@ public class BackgroundUtilsEx {
      * <p>
      * 注: 覆盖的颜色建议使用具有透明度的颜色, 才能达到覆盖效果
      */
-    public static void addStateColorCover(View view, int[] stateSet, int color) {
+    public static void addStateColorCover(View view, int[][] stateSets, int color) {
         // 透明度为 FF 的遮罩, 不需要颜色混淆
         if (Color.alpha(color) == 0xFF) {
             StateListDrawable stateListDrawable = new StateListDrawable();
-            stateListDrawable.addState(stateSet, new ColorDrawable(color));
+            for (int[] stateSet : stateSets) {
+                stateListDrawable.addState(stateSet, new ColorDrawable(color));
+            }
             stateListDrawable.addState(new int[]{}, view.getBackground());
             view.setBackground(stateListDrawable);
             return;
@@ -121,7 +143,9 @@ public class BackgroundUtilsEx {
             stateDr = BitmapUtils.toDrawable(stateBitmap);
         }
         StateListDrawable stateListDrawable = new StateListDrawable();
-        stateListDrawable.addState(stateSet, stateDr);
+        for (int[] stateSet : stateSets) {
+            stateListDrawable.addState(stateSet, stateDr);
+        }
         stateListDrawable.addState(new int[]{}, view.getBackground());
         view.setBackground(stateListDrawable);
     }
