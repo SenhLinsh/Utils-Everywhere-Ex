@@ -77,6 +77,7 @@ public abstract class SimplifiedRcvAdapterEx<T> extends RecyclerView.Adapter<Sim
 
     public void setData(List<T> list) {
         this.list = list;
+        notifyDataSetChanged();
     }
 
     public List<T> getData() {
