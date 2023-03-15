@@ -52,7 +52,7 @@ public abstract class BaseRcvAdapterEx<T, H extends ViewHolderEx> extends BaseRc
 
     protected abstract H onCreateItemViewHolder(ViewGroup parent, int viewType);
 
-    protected abstract void onBindItemViewHolder(H holder, T data, int position);
+    protected abstract void onBindItemViewHolder(H holder, T item, int position);
 
     @Override
     public void onClick(View v) {
