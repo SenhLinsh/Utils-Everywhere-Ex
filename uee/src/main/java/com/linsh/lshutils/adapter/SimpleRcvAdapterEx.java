@@ -40,6 +40,12 @@ public abstract class SimpleRcvAdapterEx<T, H extends RecyclerView.ViewHolder> e
         return data == null ? 0 : data.size();
     }
 
+    protected T getItem(int position) {
+        if (this.data != null && position < this.data.size())
+            return data.get(position);
+        return null;
+    }
+
     @NonNull
     @Override
     public H onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -54,10 +60,7 @@ public abstract class SimpleRcvAdapterEx<T, H extends RecyclerView.ViewHolder> e
     @Override
     public void onBindViewHolder(H holder, int position) {
         holder.itemView.setTag(R.id.uee_tag_view_holder, holder);
-        T data = null;
-        if (this.data != null && position < this.data.size()) {
-            data = this.data.get(position);
-        }
+        T data = getItem(position);
         onBindViewHolder(holder, data, position);
     }
 
