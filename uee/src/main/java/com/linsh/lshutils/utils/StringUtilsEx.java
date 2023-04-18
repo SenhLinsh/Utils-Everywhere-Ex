@@ -112,4 +112,14 @@ public class StringUtilsEx {
         }
         return builder.toString();
     }
+
+    /**
+     * 判断字符串是否以指定的字符开头
+     *
+     * @param text 字符串
+     * @param c    字符
+     */
+    public static boolean startsWith(String text, char c) {
+        return text.length() > 0 && text.charAt(0) == c;
+    }
 }
