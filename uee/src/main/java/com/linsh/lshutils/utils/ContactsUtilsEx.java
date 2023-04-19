@@ -21,17 +21,17 @@ public class ContactsUtilsEx {
 
     public static int findContactId(String contactName) {
         //查询条件
-        String selection = ContactsContract.RawContacts.DISPLAY_NAME_PRIMARY + " = ?";
+        String selection = ContactsContract.Data.DISPLAY_NAME_PRIMARY + " = ?";
         String[] selectionArgs = new String[]{contactName};
         //查询联系人数据
         try (Cursor cursor = ContextUtils.getContentResolver().query(
-                ContactsContract.RawContacts.CONTENT_URI,
+                ContactsContract.Data.CONTENT_URI,
                 null,
                 selection,
                 selectionArgs,
                 null)) {
             if (cursor != null && cursor.moveToFirst()) {
-                return cursor.getInt(cursor.getColumnIndex(ContactsContract.RawContacts._ID));
+                return cursor.getInt(cursor.getColumnIndex(ContactsContract.Data.RAW_CONTACT_ID));
             }
             return -1;
         }
