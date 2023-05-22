@@ -89,10 +89,23 @@ public class StringUtilsEx {
     /**
      * 自定义多个字符的 indexOf
      */
-    public static int indexOf(String text, int... chs) {
+    public static int indexOf(String text, char... chs) {
         for (int i = 0; i < text.length(); i++) {
             char c = text.charAt(i);
-            for (int ch : chs) {
+            for (char ch : chs) {
+                if (c == ch) return i;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * 自定义多个字符的 indexOf
+     */
+    public static int indexOf(String text, int fromIndex, char... chs) {
+        for (int i = fromIndex; i < text.length(); i++) {
+            char c = text.charAt(i);
+            for (char ch : chs) {
                 if (c == ch) return i;
             }
         }
