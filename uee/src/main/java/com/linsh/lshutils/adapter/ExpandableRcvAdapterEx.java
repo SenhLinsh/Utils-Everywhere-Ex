@@ -82,7 +82,11 @@ public abstract class ExpandableRcvAdapterEx<F, S> extends RecyclerView.Adapter 
 
     public void setData(List<F> firstLevelData, boolean notifyDataSetChanged) {
         this.firstLevelData = firstLevelData;
-        this.secondLevelData = null;
+        if (mLastFirstLevelClickPosition >= 0) {
+            this.secondLevelData = getSecondData(mLastFirstLevelClickPosition);
+        } else {
+            this.secondLevelData = null;
+        }
         if (notifyDataSetChanged) {
             notifyDataSetChanged();
         }
