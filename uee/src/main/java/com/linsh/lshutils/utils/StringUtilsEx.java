@@ -11,9 +11,25 @@ package com.linsh.lshutils.utils;
 public class StringUtilsEx {
 
     /**
+     * 对数组中的每个元素进行 trim
+     */
+    public static String[] trimArr(String[] texts) {
+        if (texts == null) return null;
+        for (int i = 0; i < texts.length; i++) {
+            texts[i] = trim(texts[i]);
+        }
+        return texts;
+    }
+
+    /**
      * 自定义字符的 trim
      */
     public static String trim(String text, char... trims) {
+        if (text == null)
+            return null;
+        if (trims == null || trims.length == 0) {
+            trims = new char[]{' '};
+        }
         int len = text.length();
         int st = 0;
         while ((st < len) && ArrayUtilsEx.indexOf(trims, text.charAt(st)) >= 0) {
@@ -29,6 +45,11 @@ public class StringUtilsEx {
      * 自定义字符的左向 trim
      */
     public static String trimLeft(String text, char... trims) {
+        if (text == null)
+            return null;
+        if (trims == null || trims.length == 0) {
+            trims = new char[]{' '};
+        }
         int len = text.length();
         int st = 0;
         while ((st < len) && ArrayUtilsEx.indexOf(trims, text.charAt(st)) >= 0) {
@@ -41,6 +62,11 @@ public class StringUtilsEx {
      * 自定义字符的右向 trim
      */
     public static String trimRight(String text, char... trims) {
+        if (text == null)
+            return null;
+        if (trims == null || trims.length == 0) {
+            trims = new char[]{' '};
+        }
         int len = text.length();
         while ((0 < len) && ArrayUtilsEx.indexOf(trims, text.charAt(len - 1)) >= 0) {
             len--;
