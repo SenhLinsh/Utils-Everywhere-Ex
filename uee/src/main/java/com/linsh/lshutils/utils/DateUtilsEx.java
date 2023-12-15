@@ -90,7 +90,6 @@ public class DateUtilsEx {
      */
     public static long smartParse(String date) {
         String formated = smartFormat(date);
-        System.out.println(formated);
         if (formated == null) return 0;
         if (formated.length() == 10)
             return DateUtils.parse(formated, "yyyy-MM-dd");
