@@ -2,6 +2,8 @@ package com.linsh.lshutils.viewholder;
 
 import android.view.View;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.linsh.lshutils.adapter.LoadMoreFooterRcvAdapterEx;
 
 /**
@@ -12,14 +14,10 @@ import com.linsh.lshutils.adapter.LoadMoreFooterRcvAdapterEx;
  *    desc   : 加载更多 ViewHolder 基类
  * </pre>
  */
-public abstract class LoadMoreFooterHolderEx extends SimpleViewHolderEx {
+public abstract class LoadMoreFooterHolderEx extends RecyclerView.ViewHolder {
 
     public LoadMoreFooterHolderEx(View itemView) {
         super(itemView);
-    }
-
-    @Override
-    public void setData(Object o, int position) {
     }
 
     public abstract void setStatus(LoadMoreFooterRcvAdapterEx.LoadMoreStatus status);

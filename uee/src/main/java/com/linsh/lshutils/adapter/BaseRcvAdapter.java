@@ -1,16 +1,25 @@
 package com.linsh.lshutils.adapter;
 
-import android.view.View;
-
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
- * RecyclerView.Adapter 基类
+ * <pre>
+ *    author : Senh Linsh
+ *    github : https://github.com/SenhLinsh
+ *    date   : 2023/12/19
+ *    desc   :
+ * </pre>
  */
 public abstract class BaseRcvAdapter<VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
 
     private RecyclerView mRecyclerView;
+
+    @Nullable
+    public RecyclerView getRecyclerView() {
+        return mRecyclerView;
+    }
 
     @Override
     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
@@ -18,15 +27,9 @@ public abstract class BaseRcvAdapter<VH extends RecyclerView.ViewHolder> extends
         mRecyclerView = recyclerView;
     }
 
-    protected RecyclerView getRecyclerView() {
-        return mRecyclerView;
-    }
-
-    protected View findViewById(int id) {
-        return mRecyclerView.findViewById(id);
-    }
-
-    protected View findViewWithTag(Object tag) {
-        return mRecyclerView.findViewWithTag(tag);
+    @Override
+    public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView);
+        mRecyclerView = null;
     }
 }

@@ -6,14 +6,21 @@ import android.view.ViewGroup;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.linsh.lshutils.R;
-import com.linsh.lshutils.viewholder.ViewHolderEx;
 
 import java.util.List;
 
 /**
- * Created by Senh Linsh on 17/1/4.
+ * <pre>
+ *    author : Senh Linsh
+ *    date   : 2024/01/18
+ *    desc   : RecyclerView 适配器扩展基类
+ *
+ *            一个常规的扩展基类，主要封装：
+ *            1. 数据集合的管理
+ *            2. 点击事件的回调（点击和长按）
+ * </pre>
  */
-public abstract class BaseRcvAdapterEx<T, H extends ViewHolderEx> extends BaseRcvAdapter<H>
+public abstract class BaseRcvAdapterEx<T, H extends RecyclerView.ViewHolder> extends BaseRcvAdapter<H>
         implements View.OnClickListener, View.OnLongClickListener {
 
     private List<? extends T> data;
@@ -25,6 +32,13 @@ public abstract class BaseRcvAdapterEx<T, H extends ViewHolderEx> extends BaseRc
     public void setData(List<? extends T> data) {
         this.data = data;
         notifyDataSetChanged();
+    }
+
+    protected T getItem(int position) {
+        if (this.data != null && position < this.data.size()) {
+            return this.data.get(position);
+        }
+        return null;
     }
 
     @Override
@@ -43,11 +57,7 @@ public abstract class BaseRcvAdapterEx<T, H extends ViewHolderEx> extends BaseRc
     @Override
     public void onBindViewHolder(H holder, int position) {
         holder.itemView.setTag(R.id.uee_tag_view_holder, holder);
-        T data = null;
-        if (this.data != null && position < this.data.size()) {
-            data = this.data.get(position);
-        }
-        onBindItemViewHolder(holder, data, position);
+        onBindItemViewHolder(holder, getItem(position), position);
     }
 
     protected abstract H onCreateItemViewHolder(ViewGroup parent, int viewType);
@@ -59,8 +69,8 @@ public abstract class BaseRcvAdapterEx<T, H extends ViewHolderEx> extends BaseRc
         ViewGroup.LayoutParams params = v.getLayoutParams();
         if (params instanceof RecyclerView.LayoutParams) {
             Object tag = v.getTag(R.id.uee_tag_view_holder);
-            if (tag instanceof ViewHolderEx) {
-                ViewHolderEx holder = (ViewHolderEx) tag;
+            if (tag instanceof RecyclerView.ViewHolder) {
+                RecyclerView.ViewHolder holder = (RecyclerView.ViewHolder) tag;
                 if (mOnItemClickListener != null) {
                     mOnItemClickListener.onItemClick(holder, holder.getAdapterPosition());
                 }
@@ -73,8 +83,8 @@ public abstract class BaseRcvAdapterEx<T, H extends ViewHolderEx> extends BaseRc
         ViewGroup.LayoutParams params = v.getLayoutParams();
         if (params instanceof RecyclerView.LayoutParams) {
             Object tag = v.getTag(R.id.uee_tag_view_holder);
-            if (tag instanceof ViewHolderEx) {
-                ViewHolderEx holder = (ViewHolderEx) tag;
+            if (tag instanceof RecyclerView.ViewHolder) {
+                RecyclerView.ViewHolder holder = (RecyclerView.ViewHolder) tag;
                 if (mOnItemLongClickListener != null) {
                     return mOnItemLongClickListener.onItemLongClick(holder, holder.getAdapterPosition());
                 }
@@ -90,7 +100,7 @@ public abstract class BaseRcvAdapterEx<T, H extends ViewHolderEx> extends BaseRc
     }
 
     public interface OnItemClickListener {
-        void onItemClick(ViewHolderEx holder, int position);
+        void onItemClick(RecyclerView.ViewHolder holder, int position);
     }
 
     private OnItemLongClickListener mOnItemLongClickListener;
@@ -100,6 +110,6 @@ public abstract class BaseRcvAdapterEx<T, H extends ViewHolderEx> extends BaseRc
     }
 
     public interface OnItemLongClickListener {
-        boolean onItemLongClick(ViewHolderEx holder, int position);
+        boolean onItemLongClick(RecyclerView.ViewHolder holder, int position);
     }
 }

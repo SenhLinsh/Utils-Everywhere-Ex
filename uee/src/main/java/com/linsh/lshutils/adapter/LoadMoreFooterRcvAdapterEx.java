@@ -2,8 +2,9 @@ package com.linsh.lshutils.adapter;
 
 import android.view.ViewGroup;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.linsh.lshutils.viewholder.LoadMoreFooterHolderEx;
-import com.linsh.lshutils.viewholder.SimpleViewHolderEx;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ import java.util.List;
  *    desc   : 自动实现加载更多尾部的 RecyclerView Adapter 基类
  * </pre>
  */
-public abstract class LoadMoreFooterRcvAdapterEx<T, H extends SimpleViewHolderEx<T>> extends SimpleRcvAdapterEx2<T, SimpleViewHolderEx<T>> {
+public abstract class LoadMoreFooterRcvAdapterEx<T, H extends RecyclerView.ViewHolder> extends BaseRcvAdapterEx<T, RecyclerView.ViewHolder> {
 
     private LoadMoreStatus mStatus = LoadMoreStatus.Loaded;
     private final int itemTypeFooter = 101;
@@ -25,13 +26,12 @@ public abstract class LoadMoreFooterRcvAdapterEx<T, H extends SimpleViewHolderEx
      */
     private int offsetToLoad = 3;
 
-
     @Override
-    public void setData(List<T> data) {
+    public void setData(List<? extends T> data) {
         setData(data, false);
     }
 
-    public void setData(List<T> data, boolean hasMore) {
+    public void setData(List<? extends T> data, boolean hasMore) {
         if (data == null || data.size() == 0) {
             setLoadMoreStatus(LoadMoreStatus.Closed, false);
         } else if (hasMore) {
@@ -59,7 +59,7 @@ public abstract class LoadMoreFooterRcvAdapterEx<T, H extends SimpleViewHolderEx
     }
 
     @Override
-    protected SimpleViewHolderEx<T> initViewHolder(ViewGroup parent, int viewType) {
+    protected RecyclerView.ViewHolder onCreateItemViewHolder(ViewGroup parent, int viewType) {
         if (viewType == itemTypeFooter) {
             return getFooterHolder(parent);
         } else {
@@ -72,7 +72,12 @@ public abstract class LoadMoreFooterRcvAdapterEx<T, H extends SimpleViewHolderEx
     protected abstract LoadMoreFooterHolderEx getFooterHolder(ViewGroup parent);
 
     @Override
-    protected void onBindViewHolder(SimpleViewHolderEx<T> holder, T data, int position) {
+    protected void onBindItemViewHolder(RecyclerView.ViewHolder holder, T item, int position) {
+
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (mStatus == LoadMoreStatus.Loaded) {
             // 计算当前位置和末尾的偏移量, 如果接近末尾, 则回调加载更多
             if (position >= getItemCount() - 1 - offsetToLoad) {
@@ -86,8 +91,9 @@ public abstract class LoadMoreFooterRcvAdapterEx<T, H extends SimpleViewHolderEx
             // 如果是 Footer, 则更新状态
             LoadMoreFooterHolderEx footerHolder = (LoadMoreFooterHolderEx) holder;
             footerHolder.setStatus(mStatus);
+            return;
         }
-        super.onBindViewHolder(holder, data, position);
+        super.onBindViewHolder(holder, position);
     }
 
     public LoadMoreStatus getLoadMoreStatus() {

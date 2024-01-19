@@ -6,10 +6,10 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.linsh.lshutils.R;
-
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.linsh.lshutils.R;
 
 
 /**
@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
  *    desc   : 自动实现加载更多尾部的 RecyclerView Adapter 基类
  * </pre>
  */
-public abstract class LoadMoreFooterRcvAdapterEx2 extends BaseRcvAdapter {
+public abstract class LoadMoreFooterRcvAdapterEx2 extends BaseRcvAdapterEx {
     private boolean mCanLoadMore;
     private final int itemTypeFooter = 101;
     private RecyclerView.OnScrollListener mOnScrollListener;
@@ -97,7 +97,7 @@ public abstract class LoadMoreFooterRcvAdapterEx2 extends BaseRcvAdapter {
     public void setLoadMoreStatus(LoadMoreStatus status) {
         if (mStatus != status) {
             mStatus = status;
-            View view = findViewById(R.id.pll_layout_item_footer_layout);
+            View view = getRecyclerView().findViewById(R.id.pll_layout_item_footer_layout);
             if (view != null) {
                 setHolder(new FooterHolder(view));
             }
