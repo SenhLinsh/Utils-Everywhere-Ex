@@ -2,6 +2,8 @@ package com.linsh.lshutils.utils;
 
 import androidx.annotation.Nullable;
 
+import com.linsh.utilseverywhere.ExceptionUtils;
+
 import java.io.File;
 
 /**
@@ -79,5 +81,39 @@ public class FileUtilsEx {
             }
         }
         return null;
+    }
+
+    /**
+     * 移动文件到指定位置
+     */
+    public static boolean moveToFile(File srcFile, File destFile) throws Exception {
+        ExceptionUtils.checkNotNull(srcFile);
+        ExceptionUtils.checkNotNull(destFile);
+        if (!srcFile.exists())
+            throw new Exception("Source file does not exist");
+        File destDir = destFile.getParentFile();
+        if (destDir == null)
+            throw new Exception("Destination file does not have a parent directory");
+        if (!destDir.exists() && !destDir.mkdirs())
+            throw new Exception("Failed to create destination directory");
+        if (destFile.exists())
+            throw new Exception("Destination file already exists");
+        return destFile.renameTo(destFile);
+    }
+
+    /**
+     * 移动文件到指定目录
+     */
+    public static boolean moveToDir(File srcFile, File destDir) throws Exception {
+        ExceptionUtils.checkNotNull(srcFile);
+        ExceptionUtils.checkNotNull(destDir);
+        if (!srcFile.exists())
+            throw new Exception("Source file does not exist");
+        if (!destDir.exists() && !destDir.mkdirs())
+            throw new Exception("Failed to create destination directory");
+        File destFile = new File(destDir, srcFile.getName());
+        if (destFile.exists())
+            throw new Exception("Destination file already exists");
+        return srcFile.renameTo(destFile);
     }
 }
